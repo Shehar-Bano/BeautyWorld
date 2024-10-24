@@ -33,12 +33,22 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => ['nullable', 'string'], // Phone is nullable
+            'designation' => ['nullable', 'string'], // Designation is nullable
+            'joining_date' => ['nullable', 'date'], // Joining date is nullable
+            'salary' => ['nullable', 'numeric'], // Salary is nullable
+            'status' => ['nullable', 'string'], // Status is nullable
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone' => $request->phone, // Nullable
+            'designation' => $request->designation, // Nullable
+            'joining_date' => $request->joining_date, // Nullable
+            'salary' => $request->salary, // Nullable
+            'status' => $request->status, // Nullable
         ]);
 
         event(new Registered($user));

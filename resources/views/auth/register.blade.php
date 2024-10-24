@@ -38,6 +38,40 @@
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
+       <!-- Phone -->
+       <div class="mt-4">
+        <x-input-label for="phone" :value="__('Phone')" />
+        <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')"  />
+        {{-- <x-input-error :messages="$errors->get('phone')" class="mt-2" /> --}}
+    </div>
+
+    <!-- Designation -->
+    <div class="mt-4">
+        <x-input-label for="designation" :value="__('Designation')" />
+        <x-text-input id="designation" class="block mt-1 w-full" type="text" name="designation" :value="old('designation')" />
+        {{-- <x-input-error :messages="$errors->get('designation')" class="mt-2" /> --}}
+    </div>
+
+    <!-- Joining Date -->
+    <div class="mt-4">
+        <x-input-label for="joining_date" :value="__('Joining Date')" />
+        <x-text-input id="joining_date" class="block mt-1 w-full" type="date" name="joining_date" :value="old('joining_date')"/>
+        {{-- <x-input-error :messages="$errors->get('joining_date')" class="mt-2" /> --}}
+    </div>
+
+    <!-- Salary -->
+    <div class="mt-4">
+        <x-input-label for="salary" :value="__('Salary')" />
+        <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" :value="old('salary')"/>
+        {{-- <x-input-error :messages="$errors->get('salary')" class="mt-2" /> --}}
+    </div>
+
+    <!-- Status -->
+    <div class="mt-4">
+        <x-input-label for="status" :value="__('Status')" />
+        <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="old('status')" />
+        {{-- <x-input-error :messages="$errors->get('status')" class="mt-2" /> --}}
+    </div>
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
