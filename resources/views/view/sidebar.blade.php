@@ -9,9 +9,13 @@
                         href="{{route('dashboard')}}" aria-expanded="false"><i class="mdi me-2 mdi-gauge"></i><span
                             class="hide-menu">Dashboard</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="pages-profile.html" aria-expanded="false">
-                        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Profile</span></a>
+                        href="{{url('/permissions')}}" aria-expanded="false">
+                        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Permission</span></a>
                 </li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="pages-profile.html" aria-expanded="false">
+                    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Profile</span></a>
+            </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="table-basic.html" aria-expanded="false"><i class="mdi me-2 mdi-table"></i><span
                             class="hide-menu">Table</span></a></li>
@@ -54,8 +58,17 @@
             </div>
             <div class="col-4 link-wrap">
                 <!-- item-->
-                <a href="" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i
-                        class="mdi mdi-power"></i></a>
+                <a class="link" data-toggle="tooltip" title="" data-original-title="Logout">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                               <i class="mdi mdi-power"> </i>
+                            </x-dropdown-link>
+                        </form>
+                   </a>
             </div>
         </div>
     </div>
