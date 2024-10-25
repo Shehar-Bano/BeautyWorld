@@ -24,3 +24,13 @@ require __DIR__.'/auth.php';
 Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
 Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissions.create');
 Route::post('/permission/store', [PermissionController::class, 'post'])->name('permissions.store');
+
+
+///////////////////services/////////////////
+//------------------category--------------//
+Route::resource('service_categories', ServiceCategoryController::class)->names([
+    'store' => 'service_categories.store',
+    'destroy'=>'service_categories.destroy'
+]);
+//----------------Service-------------//
+Route::resource('services',ServiceController::class);
