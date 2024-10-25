@@ -23,4 +23,5 @@
     <link href="{{asset('../assets/plugins/c3-master/c3.min.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{asset('css/style.min.css')}}" rel="stylesheet">
+    
 </head>
