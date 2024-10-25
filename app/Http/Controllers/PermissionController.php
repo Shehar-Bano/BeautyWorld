@@ -12,25 +12,24 @@ class PermissionController extends Controller
         $permissions = Permission::all();
         return view('role-&-permission.permission',compact('permissions'));
     }
+    public function create()
+    {
+        return view('role-&-permission.create-permission');
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|unique:permissions,name|max:255',
-        ]);
-
-        // Create a new permission
-        Permission::create(['name' => $request->name]);
-
-        // Redirect back to permission list with success message
-        return response()->json([
-            'success' => true,
-            'message' => 'Permission created successfully'
-        ]);
-    }
+        public function store(Request $request)
+        {
+            $request->validate([
+                'name' => 'required|unique:permissions,name|max:255',
+            ]);
+            // Create a new permission
+            Permission::create(['name' => $request->name]);
+            // Redirect back to permission list with success message
+            return redirect()->back()->with('success', 'Permission created successfully');
+        }
 
     /**
      * Display the specified resource.
