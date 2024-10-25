@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddServiceRequest;
 use App\Models\Service;
+use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -21,17 +23,23 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        
-        return view('services.create');
+        $categories=ServiceCategory::select('id','name')->get();
+        return view('services.create', compact('categories'));
+      
         
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddServiceRequest $request)
     {
-        //
+        if($request->hasFile('image')){
+            $image = $request->file('image')->store('images/services','public');
+            $request->merge(['image' => $image]);
+        }
+        Service::create($request->validated());
+        return redirect()->route('services.index')->with('success', 'Service created successfully');
     }
 
     /**
