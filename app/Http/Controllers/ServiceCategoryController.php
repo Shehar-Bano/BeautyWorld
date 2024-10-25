@@ -12,54 +12,45 @@ class ServiceCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories=ServiceCategory::get();
+        return view('services.category.index',compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated=$request->validate([
+            'name'=>'required',
+        ]);
+        ServiceCategory::create($validated);
+        return redirect()->back()->with('success','Category created successfully');
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ServiceCategory $serviceCategory)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ServiceCategory $serviceCategory)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ServiceCategory $serviceCategory)
+    public function update(Request $request,$id)
     {
-        //
+        $validated=$request->validate([
+            'name'=>'required',
+            ]);
+            ServiceCategory::find($id)->update($validated);
+            return redirect()->back()->with('success','Category updated successfully');
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ServiceCategory $serviceCategory)
+    public function destroy($id)
     {
-        //
+        $category=ServiceCategory::find($id);
+        $category->delete();
+        return redirect()->back()->with('success','Category deleted successfully');
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('price');
             $table->time('duration');
             $table->enum('status',['available','unavailable'])->default('available');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

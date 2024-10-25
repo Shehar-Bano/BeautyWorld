@@ -6,22 +6,41 @@
             <ul id="sidebarnav">
                 <!-- User Profile-->
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="{{route('dashboard')}}" aria-expanded="false"><i class="mdi me-2 mdi-gauge"></i><span
+                        href="{{ route('dashboard') }}" aria-expanded="false"><i class="mdi me-2 mdi-gauge"></i><span
                             class="hide-menu">Dashboard</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="{{url('/permissions')}}" aria-expanded="false">
+                        href="{{ url('/permissions') }}" aria-expanded="false">
                         <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Permission</span></a>
                 </li>
+                <!-- Manage Services Section -->
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                        aria-expanded="false">
+                        <i class="mdi me-2 mdi-settings"></i><span class="hide-menu">Manage Services</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item mt-2">
+                            <a href="{{ route('service_categories.index') }}" class="sidebar-link">
+                                <i class="mdi mdi-format-list-bulleted"></i><span class="hide-menu"> Category </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('services.index') }}" class="sidebar-link">
+                                <i class="mdi mdi-briefcase"></i><span class="hide-menu"> Service </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                    href="pages-profile.html" aria-expanded="false">
-                    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Profile</span></a>
-            </li>
+                        href="pages-profile.html" aria-expanded="false">
+                        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Profile</span></a>
+                </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="table-basic.html" aria-expanded="false"><i class="mdi me-2 mdi-table"></i><span
                             class="hide-menu">Table</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="icon-material.html" aria-expanded="false"><i
-                            class="mdi me-2 mdi-emoticon"></i><span class="hide-menu">Icon</span></a></li>
+                        href="icon-material.html" aria-expanded="false"><i class="mdi me-2 mdi-emoticon"></i><span
+                            class="hide-menu">Icon</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="map-google.html" aria-expanded="false"><i class="mdi me-2 mdi-earth"></i><span
                             class="hide-menu">Google Map</span></a></li>
@@ -34,8 +53,8 @@
                             class="hide-menu">Error 404</span></a>
                 </li>
                 <li class="text-center p-20 upgrade-btn">
-                    <a href="https://www.wrappixel.com/templates/materialpro/"
-                        class="btn btn-warning text-white mt-4" target="_blank">Upgrade to
+                    <a href="https://www.wrappixel.com/templates/materialpro/" class="btn btn-warning text-white mt-4"
+                        target="_blank">Upgrade to
                         Pro</a>
                 </li>
             </ul>
@@ -59,16 +78,16 @@
             <div class="col-4 link-wrap">
                 <!-- item-->
                 <a class="link" data-toggle="tooltip" title="" data-original-title="Logout">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                        <x-dropdown-link :href="route('logout')"
+                            onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                               <i class="mdi mdi-power"> </i>
-                            </x-dropdown-link>
-                        </form>
-                   </a>
+                            <i class="mdi mdi-power"> </i>
+                        </x-dropdown-link>
+                    </form>
+                </a>
             </div>
         </div>
     </div>
