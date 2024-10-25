@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('price');
             $table->time('duration');
             $table->enum('status',['available','unavailable'])->default('available');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('service_categories')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
