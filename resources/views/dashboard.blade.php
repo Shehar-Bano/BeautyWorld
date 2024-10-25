@@ -1,9 +1,14 @@
 @include('view.head')
+
 @include('view.topbar')
 @include('view.sidebar')
 <div class="page-wrapper">
-@include('view.content')
-    <!-- ============================================================== -->
+
+    <div class="container-fluid">
+      @include('view.content')
+      @include('view.sale')
+    </div>
+
 </div>
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->
