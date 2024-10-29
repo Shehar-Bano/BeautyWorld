@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
@@ -65,6 +66,14 @@ Route::prefix('employee')->name('employees.')->group(function () {
     Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('update');
     Route::delete('/delete/{id}',[EmployeeController::class, 'destroy'])->name('delete');
+});
+Route::prefix('inventory')->name('inventories.')->group(function () {
+    Route::get('/', [InventoryController::class, 'index'])->name('index');
+    Route::get('/create',[InventoryController::class, 'create'])->name('create');
+    Route::post('/store',[InventoryController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [InventoryController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [InventoryController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}',[InventoryController::class, 'destroy'])->name('delete');
 });
 ///////////////////services/////////////////
 //------------------category--------------//

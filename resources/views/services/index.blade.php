@@ -37,7 +37,7 @@
                             <td>{{ $service->name }}</td>
                             <td>{{ $service->description }}</td>
                             <td>
-                                <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}" width="50">
+                                <img src="{{ asset('storage/images/services' . $service->image) }}" alt="{{ $service->name }}" width="50">
                             </td>
                             <td>{{ $service->price }}</td>
                             <td>{{ $service->duration }}</td>

@@ -32,6 +32,10 @@
         href="{{ route('employees.index') }}" aria-expanded="false">
         <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Employees</span></a>
 </li>
+<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+    href="{{ route('inventories.index') }}" aria-expanded="false">
+    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Inventories</span></a>
+</li>
     @endif
                 <!-- Manage Services Section -->
                 <li class="sidebar-item">
@@ -56,17 +60,7 @@
                         href="pages-profile.html" aria-expanded="false">
                         <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Profile</span></a>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="table-basic.html" aria-expanded="false"><i class="mdi me-2 mdi-table"></i><span
-                            class="hide-menu">Table</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="icon-material.html" aria-expanded="false"><i class="mdi me-2 mdi-emoticon"></i><span
-                            class="hide-menu">Icon</span></a></li>
-               <li class="sidebar-item">
-    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-        <i class="mdi me-2 mdi-earth"></i>
-        <span class="hide-menu">Maps</span>
-    </a>
+
     <ul aria-expanded="false" class="collapse first-level">
         <li class="sidebar-item">
             <a href="map-google.html" class="sidebar-link">
@@ -85,11 +79,7 @@
                         href="pages-error-404.html" aria-expanded="false"><i class="mdi me-2 mdi-help-circle"></i><span
                             class="hide-menu">Error 404</span></a>
                 </li>
-                <li class="text-center p-20 upgrade-btn">
-                    <a href="https://www.wrappixel.com/templates/materialpro/" class="btn btn-warning text-white mt-4"
-                        target="_blank">Upgrade to
-                        Pro</a>
-                </li>
+                
             </ul>
 
         </nav>
