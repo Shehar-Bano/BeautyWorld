@@ -15,53 +15,59 @@
                         <label for="name">Category Name</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">Add Category</button>
+                    <button type="submit" class="btn btn-info text-white mt-2">Add Category</button>
                 </form>
             </div>
         </div>
 
         <!-- Display All Categories -->
         <div class="mt-5">
-            <h4>All Categories</h4>
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($categories as $category)
+           <div class="card">
+            <div class="card-header"><h4>All Categories</h4></div>
+            <div class="card-body">
+          
+                <table class="table table-bordered mt-3">
+                    <thead>
                         <tr>
-                            <td>{{ $category->id }}</td>
-                            <td>{{ $category->name }}</td>
-                            <td>
-                                <!-- Edit Icon to Trigger Modal -->
-                                <a href="javascript:void(0);" onclick="editCategory({{ $category->id }}, '{{ $category->name }}')" 
-                                   class="text-warning me-2" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                
-                                <!-- Delete Icon to Trigger Confirmation -->
-                                <a href="javascript:void(0);" onclick="confirmDelete({{ $category->id }})" 
-                                   class="text-danger" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            
-                                <!-- Form to Submit Delete Request (Hidden) -->
-                                <form id="delete-form-{{ $category->id }}" 
-                                      action="{{ route('service_categories.destroy', $category->id) }}" 
-                                      method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
-                            
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($categories as $category)
+                            <tr>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->name }}</td>
+                                <td>
+                                    <!-- Edit Icon to Trigger Modal -->
+                                    <a href="javascript:void(0);" onclick="editCategory({{ $category->id }}, '{{ $category->name }}')" 
+                                       class="text-warning me-2" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    
+                                    <!-- Delete Icon to Trigger Confirmation -->
+                                    <a href="javascript:void(0);" onclick="confirmDelete({{ $category->id }})" 
+                                       class="text-danger" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                
+                                    <!-- Form to Submit Delete Request (Hidden) -->
+                                    <form id="delete-form-{{ $category->id }}" 
+                                          action="{{ route('service_categories.destroy', $category->id) }}" 
+                                          method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+           </div>
         </div>
 
         <!-- Edit Category Modal -->
@@ -85,7 +91,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Update Category</button>
+                            <button type="submit" class="btn btn-info text-white">Update Category</button>
                         </div>
                     </form>
                 </div>

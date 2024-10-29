@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
@@ -15,7 +16,9 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        return view('services.index', compact('services'));
+        $categories=ServiceCategory::select('id','name')->get();
+        return view('services.index', compact('services','categories'));
+        
     }
 
     /**
@@ -50,20 +53,22 @@ class ServiceController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(UpdateServiceRequest $request,$id)
     {
-        //
+        $service = Service::find($id);
+        if($request->hasFile('image')){
+            $image = $request->file('image')->store('images/services','public');
+            $request->merge(['image' => $image]);
+        }
+            $service->update($request->validated());
+            return redirect()->route('services.index')->with('success', 'Service updated successfully');
+
+        
     }
 
     /**
