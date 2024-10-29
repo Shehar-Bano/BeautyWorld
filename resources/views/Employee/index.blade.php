@@ -77,8 +77,8 @@
         <div class="table-wrapper">
             <!-- Title and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Permissions</h4>
-                <a href="{{ route('permissions.create') }}" class="btn btn-add">Add Permission</a>
+                <h4>User's</h4>
+                <a href="{{ route('employees.create') }}" class="btn btn-add">Add User</a>
             </div>
 
             <!-- Table -->
@@ -86,23 +86,29 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Permission Name</th>
+                        <th>Employee Name</th>
+                        <th>Designation</th>
+                        <th>Salary</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($permissions as $permission)
+                    @foreach($users as $user)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $permission->name }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->designation }}</td>
+                            <td>{{ $user->salary }}</td>
+                            <td>{{ $user->status }}</td>
 
                             <td class="action-icons">
                                 <!-- Edit Icon -->
-                                <a href="{{ route('permissions.edit', $permission->id) }}" class="edit-icon">
+                                <a href="{{ route('employees.edit', $user->id) }}" class="edit-icon">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <!-- Delete Icon -->
-                                <form action="{{ route('permissions.delete', $permission->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('employees.delete', $user->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="delete-icon">

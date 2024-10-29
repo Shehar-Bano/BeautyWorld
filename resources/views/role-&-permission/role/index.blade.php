@@ -77,8 +77,8 @@
         <div class="table-wrapper">
             <!-- Title and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Permissions</h4>
-                <a href="{{ route('permissions.create') }}" class="btn btn-add">Add Permission</a>
+                <h4>Roles</h4>
+                <a href="{{ route('roles.create') }}" class="btn btn-add">Add Role</a>
             </div>
 
             <!-- Table -->
@@ -91,18 +91,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($permissions as $permission)
+                    @foreach($roles as $role)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $permission->name }}</td>
+                            <td>{{ $role->name }}</td>
 
                             <td class="action-icons">
                                 <!-- Edit Icon -->
-                                <a href="{{ route('permissions.edit', $permission->id) }}" class="edit-icon">
+                                <a href="{{ route('roles.edit', $role->id) }}" class="edit-icon">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <!-- Delete Icon -->
-                                <form action="{{ route('permissions.delete', $permission->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('roles.delete', $role->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="delete-icon">

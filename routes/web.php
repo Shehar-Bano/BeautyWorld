@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ServiceCategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,11 +25,47 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
-Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissions.create');
-Route::post('/permission/store', [PermissionController::class, 'post'])->name('permissions.store');
 
+Route::prefix('permission')->name('permissions.')->group(function () {
+    Route::get('/', [PermissionController::class, 'index'])->name('index');
+    Route::get('/create', [PermissionController::class, 'create'])->name('create');
+    Route::post('/store', [PermissionController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [PermissionController::class, 'show'])->name('edit');
+    Route::post('/update/{id}', [PermissionController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [PermissionController::class, 'destroy'])->name('delete');
+});
+Route::prefix('role')->name('roles.')->group(function () {
+    Route::get('/', [RoleController::class, 'index'])->name('index');
+    Route::get('/create',[RoleController::class, 'create'])->name('create');
+    Route::post('/store',[RoleController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [RoleController::class, 'show'])->name('edit');
+    Route::post('/update/{id}', [RoleController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}',[RoleController::class, 'destroy'])->name('delete');
+});
 
+Route::prefix('role-permission')->name('role.permission.')->group(function() {
+    Route::get('/', [RolePermissionController::class, 'index'])->name('index');
+    Route::get('/form', [RolePermissionController::class, 'create'])->name('form');
+    Route::post('/', [RolePermissionController::class, 'store'])->name('store');
+    Route::get('/show/{id}', [RolePermissionController::class, 'show'])->name('show');
+    Route::put('/update/{id}', [RolePermissionController::class, 'update'])->name('update');
+});
+Route::prefix('user-role')->name('user.role.')->group(function() {
+    Route::get('/', [RoleUserController::class, 'index'])->name('index');
+    Route::get('/form', [RoleUserController::class, 'create'])->name('form');
+    Route::post('/', [RoleUserController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [RoleUserController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [RoleUserController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [RoleUserController::class, 'destroy'])->name('delete');
+});
+Route::prefix('employee')->name('employees.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'index'])->name('index');
+    Route::get('/create',[EmployeeController::class, 'create'])->name('create');
+    Route::post('/store',[EmployeeController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}',[EmployeeController::class, 'destroy'])->name('delete');
+});
 ///////////////////services/////////////////
 //------------------category--------------//
 Route::resource('service_categories', ServiceCategoryController::class)->names([

@@ -52,7 +52,7 @@
                                 <a href="javascript:void(0);" onclick="editService({{ $service->id }}, '{{ $service->name }}', '{{ $service->description }}', '{{ $service->price }}', '{{ $service->duration }}', '{{ $service->status }}', '{{ $service->category_id }}')" class="text-warning me-2" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                
+
                                 <!-- Delete Icon to Trigger Confirmation -->
                                 <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="text-danger" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
