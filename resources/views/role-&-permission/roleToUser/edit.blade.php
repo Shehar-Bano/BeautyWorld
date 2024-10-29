@@ -6,66 +6,72 @@
         font-family: 'Arial', sans-serif;
         background-color: #f4f6f9;
     }
-    .form-wrapper {
-        margin: 50px auto;
-        max-width: 800px; /* Adjust for larger width like table */
-        padding: 30px;
+    .card {
         background-color: #ffffff;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    .form-wrapper h4 {
-        margin-bottom: 20px;
-        color: #333;
-        font-weight: 600;
-    }
-    .btn-submit {
-        background-color: #00c9b7;
+    .btn-custom {
+        background-color: #17a2b8;
         color: white;
         border: none;
         padding: 10px 20px;
         border-radius: 4px;
-        font-size: 14px;
     }
-    .btn-submit:hover {
-        background-color: #00b3a5;
+    .btn-custom:hover {
+        background-color: #138496;
     }
-    .form-control {
+    .form-select {
+        background-color: #f8f9fa;
+        color: #495057;
         border: 1px solid #ced4da;
-        border-radius: 4px;
-        padding: 10px;
     }
-    .form-group label {
-        font-weight: 500;
-        color: #555;
+    .form-select:focus {
+        border-color: #80bdff;
+        outline: none;
     }
-    .page-title {
-        font-weight: bold;
-        font-size: 22px;
-        margin-bottom: 20px;
+    h2 {
+        color: #343a40;
+        font-weight: 700;
     }
 </style>
 
 @include('view.topbar')
 @include('view.sidebar')
+
 <div class="page-wrapper">
     <div class="container-fluid">
+        {{-- ///////////// Assign Role to User Form ////////// --}}
         <div class="container">
-            <div class="form-wrapper">
-                <h4 class="page-title">Add Permission</h4>
-                <form action="{{ route('permissions.store') }}" method="POST" id="permissionForm">
-                    @csrf
-                    <div class="form-group">
-                        <label for="name">Permission Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter permission name" required>
-                    </div>
-                    <button type="submit" class="btn btn-submit">Add Permission</button>
-                </form>
-                <a href="{{route('permissions.index')}}" class="btn btn-primary mt-3">Back</a>
-            </div>
+            <h2>Edit User Role</h2>
+            <form action="{{ route('user.role.update', $user->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label for="name">User Name</label>
+                    <input type="text" value="{{ $user->name }}" class="form-control" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Select Role</label>
+                    <select name="role_id" id="role" class="form-control">
+                        @foreach($roles as $role)
+                        <option value="{{ $role->id }}" {{ $user->roles->contains($role) ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Role</button>
+            </form>
+            <a href="{{route('user.role.index')}}" class="btn btn-warning mt-3">back</a>
         </div>
+
     </div>
 </div>
+
 <script>
     // Check if there is a session message
     @if (session('success'))
@@ -98,4 +104,5 @@
         });
     @endif
 </script>
+
 @include('view.script')

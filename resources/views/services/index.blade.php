@@ -6,7 +6,7 @@
 <div class="page-wrapper">
     <div class="container-fluid">
 
-       
+
         <!-- Button to Redirect to Create Service Page -->
         <div class="d-flex justify-content-end mt-4">
             <a href="{{ route('services.create') }}" class="btn btn-primary">
@@ -37,7 +37,7 @@
                             <td>{{ $service->name }}</td>
                             <td>{{ $service->description }}</td>
                             <td>
-                                <img src="{{ asset('storage/images/services/' . $service->image) }}" alt="{{ $service->name }}" width="50">
+                                <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->name }}" width="50">
                             </td>
                             <td>{{ $service->price }}</td>
                             <td>{{ $service->duration }}</td>
@@ -47,7 +47,7 @@
                                 <a href="javascript:void(0);" onclick="editService({{ $service->id }}, '{{ $service->name }}', '{{ $service->description }}', '{{ $service->price }}', '{{ $service->duration }}', '{{ $service->status }}')" class="text-warning me-2" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                
+
                                 <!-- Delete Icon to Trigger Confirmation -->
                                 <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="text-danger" title="Delete">
                                     <i class="fas fa-trash-alt"></i>

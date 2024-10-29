@@ -52,16 +52,16 @@
     <div class="container-fluid">
         <div class="container">
             <div class="form-wrapper">
-                <h4 class="page-title">Add Permission</h4>
-                <form action="{{ route('permissions.store') }}" method="POST" id="permissionForm">
+                <h4 class="page-title">Update Role</h4>
+                <form action="{{ route('roles.update',['id'=>$role->id]) }}" method="POST" id="permissionForm">
                     @csrf
                     <div class="form-group">
-                        <label for="name">Permission Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter permission name" required>
+                        <label for="name">Role Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{$role->name}}" placeholder="Enter permission name" required>
                     </div>
-                    <button type="submit" class="btn btn-submit">Add Permission</button>
+                    <button type="submit" class="btn btn-submit">Updat Role</button>
                 </form>
-                <a href="{{route('permissions.index')}}" class="btn btn-primary mt-3">Back</a>
+                <a href="{{route('roles.index')}}" class="btn btn-primary mt-3">Back</a>
             </div>
         </div>
     </div>

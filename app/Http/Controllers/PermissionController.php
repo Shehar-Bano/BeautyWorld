@@ -37,10 +37,9 @@ class PermissionController extends Controller
     public function show(string $id)
     {
         $permission = Permission::findOrFail($id);
-        return response()->json([
-            'data'=> $permission
+        return view('role-&-permission.update-permission',compact('permission'));
 
-        ]);
+
     }
 
     /**
@@ -57,10 +56,8 @@ class PermissionController extends Controller
         $permission->update(['name' => $request->name]);
 
         // Redirect back to permission list with success message
-        return response()->json([
-            'success' => true,
-            'message' => 'Permission updated successfully'
-        ]);
+        return redirect()->back()->with('success', 'Permission updated successfully');
+
     }
 
     /**
@@ -70,9 +67,7 @@ class PermissionController extends Controller
     {
         $permission = Permission::findOrFail($id);
         $permission->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Permission deleted successfully'
-        ]);
+        return redirect()->back()->with('success', 'Permission deleted successfully');
+
     }
 }

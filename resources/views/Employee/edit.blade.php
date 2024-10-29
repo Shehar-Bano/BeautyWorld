@@ -52,16 +52,39 @@
     <div class="container-fluid">
         <div class="container">
             <div class="form-wrapper">
-                <h4 class="page-title">Add Permission</h4>
-                <form action="{{ route('permissions.store') }}" method="POST" id="permissionForm">
+                <h4 class="page-title">Update User</h4>
+                <form action="{{ route('employees.update',['id'=>$user->id]) }}" method="POST" >
                     @csrf
                     <div class="form-group">
-                        <label for="name">Permission Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter permission name" required>
+                        <label for="name">User Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{$user->name}}" placeholder="Enter user name" required>
                     </div>
-                    <button type="submit" class="btn btn-submit">Add Permission</button>
+                    <div class="form-group">
+                        <label for="name">Phone Number</label>
+                        <input type="number" class="form-control" id="phone" name="phone" value="{{$user->phone}}" placeholder="Enter Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Designation</label>
+                        <input type="text" class="form-control" id="designation" name="designation" value="{{$user->designation}}" placeholder="Enter designation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Joining Date</label>
+                        <input type="date" class="form-control" id="joining_date" name="joining_date" value="{{$user->joining_date}}" placeholder="Enter Joining Date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Salary</label>
+                        <input type="text" class="form-control" id="salary" name="salary" value="{{$user->salary}}" placeholder="Enter Salary" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="available" {{ $user->status == 'available' ? 'selected' : '' }}>Available</option>
+                            <option value="reserved" {{ $user->status == 'reserved' ? 'selected' : '' }}>Reserved</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-submit">Update Role</button>
                 </form>
-                <a href="{{route('permissions.index')}}" class="btn btn-primary mt-3">Back</a>
+                <a href="{{route('employees.index')}}" class="btn btn-primary mt-3">Back</a>
             </div>
         </div>
     </div>

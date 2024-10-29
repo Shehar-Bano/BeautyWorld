@@ -8,10 +8,31 @@
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="{{ route('dashboard') }}" aria-expanded="false"><i class="mdi me-2 mdi-gauge"></i><span
                             class="hide-menu">Dashboard</span></a></li>
+@php
+    $user = Auth::user();
+@endphp
+                      @if ($user->hasRole('admin'))
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="{{ url('/permissions') }}" aria-expanded="false">
+                        href="{{ url('/permission') }}" aria-expanded="false">
                         <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Permission</span></a>
                 </li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ url('/role') }}" aria-expanded="false">
+                    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role</span></a>
+            </li>
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                href="{{ url('/role-permission') }}" aria-expanded="false">
+                <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to Permission</span></a>
+        </li>
+        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+            href="{{ route('user.role.index') }}" aria-expanded="false">
+            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to User</span></a>
+    </li>
+    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+        href="{{ route('employees.index') }}" aria-expanded="false">
+        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Employees</span></a>
+</li>
+    @endif
                 <!-- Manage Services Section -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
@@ -41,9 +62,21 @@
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="icon-material.html" aria-expanded="false"><i class="mdi me-2 mdi-emoticon"></i><span
                             class="hide-menu">Icon</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="map-google.html" aria-expanded="false"><i class="mdi me-2 mdi-earth"></i><span
-                            class="hide-menu">Google Map</span></a></li>
+               <li class="sidebar-item">
+    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+        <i class="mdi me-2 mdi-earth"></i>
+        <span class="hide-menu">Maps</span>
+    </a>
+    <ul aria-expanded="false" class="collapse first-level">
+        <li class="sidebar-item">
+            <a href="map-google.html" class="sidebar-link">
+                <i class="mdi mdi-google-maps"></i>
+                <span class="hide-menu">Google Map</span>
+            </a>
+        </li>
+        <!-- You can add more items to the dropdown if needed -->
+    </ul>
+</li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="pages-blank.html" aria-expanded="false"><i
                             class="mdi me-2 mdi-book-open-variant"></i><span class="hide-menu">Blank</span></a>

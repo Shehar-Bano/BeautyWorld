@@ -74,43 +74,38 @@
 <div class="page-wrapper">
     <div class="container-fluid">
         {{-- /////////////after this add form////////// --}}
-        <div class="table-wrapper">
-            <!-- Title and Add Button -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Permissions</h4>
-                <a href="{{ route('permissions.create') }}" class="btn btn-add">Add Permission</a>
-            </div>
+        <div class="container">
+            <h2>User Roles</h2>
+            <a href="{{ route('user.role.form') }}" class="btn btn-primary mb-3">Assign Role to User</a>
 
-            <!-- Table -->
             <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Permission Name</th>
+                        <th>User Name</th>
+                        <th>Roles</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($permissions as $permission)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $permission->name }}</td>
-
-                            <td class="action-icons">
-                                <!-- Edit Icon -->
-                                <a href="{{ route('permissions.edit', $permission->id) }}" class="edit-icon">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <!-- Delete Icon -->
-                                <form action="{{ route('permissions.delete', $permission->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="delete-icon">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                    @foreach($users as $user)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>
+                            @foreach($user->roles as $role)
+                            <span class="badge badge-info">{{ $role->name }}</span>
+                            @endforeach
+                        </td>
+                        <td>
+                            <a href="{{ route('user.role.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ route('user.role.delete', $user->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Remove Role</button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

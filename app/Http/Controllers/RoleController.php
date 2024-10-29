@@ -13,27 +13,29 @@ class RoleController extends Controller
 
     public function index()
     {
-        $permissions = Role::all();
-        return response()->json($permissions);
+        $roles = Role::all();
+        return view('role-&-permission.role.index',compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
+    public function create()
+    {
+        return view('role-&-permission.role.create');
+    }
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions,name|max:255',
+            'name' => 'required|unique:roles,name|max:255',
         ]);
 
         // Create a new permission
         Role::create(['name' => $request->name]);
 
         // Redirect back to permission list with success message
-        return response()->json([
-            'success' => true,
-            'message' => 'Role created successfully'
-        ]);
+        return redirect()->back()->with('success', 'Role created successfully');
+
     }
 
     /**
@@ -41,11 +43,9 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        $permission = Role::findOrFail($id);
-        return response()->json([
-            'data'=> $permission
+        $role = Role::findOrFail($id);
+        return view('role-&-permission.role.edit',compact('role'));
 
-        ]);
     }
 
     /**
@@ -62,10 +62,8 @@ class RoleController extends Controller
         $permission->update(['name' => $request->name]);
 
         // Redirect back to permission list with success message
-        return response()->json([
-            'success' => true,
-            'message' => 'Role updated successfully'
-        ]);
+        return redirect()->back()->with('success', 'Role Updated successfully');
+
     }
 
     /**
@@ -75,10 +73,8 @@ class RoleController extends Controller
     {
         $permission = Role::findOrFail($id);
         $permission->delete();
-        return response()->json([
-            'success' => true,
-            'message' => 'Role deleted successfully'
-        ]);
+        return redirect()->back()->with('success', 'Role deleted successfully');
+
     }
     public function goToPage(Request $request)
     {
@@ -87,42 +83,42 @@ class RoleController extends Controller
         $roles = Role::all();
         $users = User::all();
         $permissions = Permission::all();
-        return view('permissionSync',compact('roles','users','user','permissions'));
+        return view('role-&-permission.roleToPermission.index',compact('roles','users','user','permissions'));
 
     }
-    public function assignRole(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|exists:roles,name',
-        ]);
-        $user = User::find($request->user_id);
-        $role = $request->role;
+    // public function assignRole(Request $request)
+    // {
+    //     $request->validate([
+    //         'user_id' => 'required|exists:users,id',
+    //         'role' => 'required|exists:roles,name',
+    //     ]);
+    //     $user = User::find($request->user_id);
+    //     $role = $request->role;
 
-        if ($user->hasRole($role)) {
-            return redirect()->back()->with('error', 'User already has this role.');
-        }
-        $user->assignRole($role);
-        return redirect()->back()->with('success', 'Role assigned successfully!');
-    }
-    public function getPermissions(Request $request)
-    {
-        $request->validate([
-            'permission_id' => 'required',
-            'role_id' =>'required|exists:roles,id',
-        ]);
-        $role = Role::find($request->role_id);
-        $permission = Permission::find($request->permission_id);
-        if($role->hasPermissionTo($permission) == false)
-        {
-            $role->givePermissionTo($permission);
-            return redirect()->back()->with('success', 'Role assigned successfully!');
-        }
-        else
-        {
-            return redirect()->back()->with('error', 'permission already assigned to role');
+    //     if ($user->hasRole($role)) {
+    //         return redirect()->back()->with('error', 'User already has this role.');
+    //     }
+    //     $user->assignRole($role);
+    //     return redirect()->back()->with('success', 'Role assigned successfully!');
+    // }
+    // public function getPermissions(Request $request)
+    // {
+    //     $request->validate([
+    //         'permission_id' => 'required',
+    //         'role_id' =>'required|exists:roles,id',
+    //     ]);
+    //     $role = Role::find($request->role_id);
+    //     $permission = Permission::find($request->permission_id);
+    //     if($role->hasPermissionTo($permission) == false)
+    //     {
+    //         $role->givePermissionTo($permission);
+    //         return redirect()->back()->with('success', 'Role assigned successfully!');
+    //     }
+    //     else
+    //     {
+    //         return redirect()->back()->with('error', 'permission already assigned to role');
 
-        }
+    //     }
 
-    }
+    // }
 }
