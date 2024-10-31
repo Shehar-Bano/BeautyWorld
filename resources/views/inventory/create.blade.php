@@ -78,7 +78,7 @@
                     </div>
                     <button type="submit" class="btn btn-submit">Add product</button>
                 </form>
-                <a href="{{route('inventories.index')}}" class="btn btn-primary mt-3">Back</a>
+                
             </div>
         </div>
     </div>

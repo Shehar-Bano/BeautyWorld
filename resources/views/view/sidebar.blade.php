@@ -37,6 +37,12 @@
     <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Inventories</span></a>
 </li>
     @endif
+    @if ($user->hasRole('admin') || $user->hasRole('manager'))
+    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+        href="{{ route('deals.index') }}" aria-expanded="false">
+        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Deals</span></a>
+    </li>
+    @endif
                 <!-- Manage Services Section -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
@@ -79,7 +85,7 @@
                         href="pages-error-404.html" aria-expanded="false"><i class="mdi me-2 mdi-help-circle"></i><span
                             class="hide-menu">Error 404</span></a>
                 </li>
-                
+
             </ul>
 
         </nav>

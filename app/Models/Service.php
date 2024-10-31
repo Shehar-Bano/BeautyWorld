@@ -15,4 +15,12 @@ class Service extends Model
             'status',
             'category_id'
     ];
+    public function deal()
+    {
+        return $this->hasMany(Deal::class);
+    }
+    public function dealService()
+    {
+        return $this->hasMany(DealService::class, 'deal_service_id');
+    }
 }

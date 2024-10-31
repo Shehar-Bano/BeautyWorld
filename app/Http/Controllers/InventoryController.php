@@ -25,7 +25,7 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $this->inventory->createInventory($request);
-        return redirect()->back()->with('success','product added successfully');
+        return redirect('/inventory')->with('success','product added successfully');
     }
     public function edit($id)
     {
@@ -35,11 +35,11 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->inventory->updateInventory($request, $id);
-        return redirect()->back()->with('success', 'product updated successfully');
+        return redirect('/inventory')->with('success', 'product updated successfully');
     }
     public function destroy($id)
     {
         $this->inventory->deleteInventory($id);
-        return redirect()->back()->with('success', 'product deleted successfully');
+        return redirect('/inventory')->with('success', 'product deleted successfully');
     }
 }
