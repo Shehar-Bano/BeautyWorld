@@ -86,39 +86,5 @@ class RoleController extends Controller
         return view('role-&-permission.roleToPermission.index',compact('roles','users','user','permissions'));
 
     }
-    // public function assignRole(Request $request)
-    // {
-    //     $request->validate([
-    //         'user_id' => 'required|exists:users,id',
-    //         'role' => 'required|exists:roles,name',
-    //     ]);
-    //     $user = User::find($request->user_id);
-    //     $role = $request->role;
-
-    //     if ($user->hasRole($role)) {
-    //         return redirect()->back()->with('error', 'User already has this role.');
-    //     }
-    //     $user->assignRole($role);
-    //     return redirect()->back()->with('success', 'Role assigned successfully!');
-    // }
-    // public function getPermissions(Request $request)
-    // {
-    //     $request->validate([
-    //         'permission_id' => 'required',
-    //         'role_id' =>'required|exists:roles,id',
-    //     ]);
-    //     $role = Role::find($request->role_id);
-    //     $permission = Permission::find($request->permission_id);
-    //     if($role->hasPermissionTo($permission) == false)
-    //     {
-    //         $role->givePermissionTo($permission);
-    //         return redirect()->back()->with('success', 'Role assigned successfully!');
-    //     }
-    //     else
-    //     {
-    //         return redirect()->back()->with('error', 'permission already assigned to role');
-
-    //     }
-
-    // }
+   
 }

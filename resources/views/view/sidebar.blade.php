@@ -29,33 +29,33 @@
                         </li>
                     </ul>
                 </li>
-
-                @php
-                    $user = Auth::user();
-                @endphp
-                @if ($user->hasRole('admin'))
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="{{ url('/permission') }}" aria-expanded="false">
-                            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Permission</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="{{ url('/role') }}" aria-expanded="false">
-                            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="{{ url('/role-permission') }}" aria-expanded="false">
-                            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to
-                                Permission</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="{{ route('user.role.index') }}" aria-expanded="false">
-                            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to User</span></a>
-                    </li>
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="{{ route('employees.index') }}" aria-expanded="false">
-                            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Employees</span></a>
-                    </li>
-                @endif
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                    href="{{ url('/role') }}" aria-expanded="false">
+                    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role</span></a>
+            </li>
+            <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                href="{{ url('/role-permission') }}" aria-expanded="false">
+                <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to Permission</span></a>
+        </li>
+        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+            href="{{ route('user.role.index') }}" aria-expanded="false">
+            <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role to User</span></a>
+    </li>
+    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+        href="{{ route('employees.index') }}" aria-expanded="false">
+        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Employees</span></a>
+</li>
+<li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+    href="{{ route('inventories.index') }}" aria-expanded="false">
+    <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Inventories</span></a>
+</li>
+    @endif
+    @if ($user->hasRole('admin') || $user->hasRole('manager'))
+    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+        href="{{ route('deals.index') }}" aria-expanded="false">
+        <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Deals</span></a>
+    </li>
+    @endif
                 <!-- Manage Services Section -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
@@ -101,6 +101,17 @@
                         <!-- You can add more items to the dropdown if needed -->
                     </ul>
                 </li>
+
+    <ul aria-expanded="false" class="collapse first-level">
+        <li class="sidebar-item">
+            <a href="map-google.html" class="sidebar-link">
+                <i class="mdi mdi-google-maps"></i>
+                <span class="hide-menu">Google Map</span>
+            </a>
+        </li>
+        <!-- You can add more items to the dropdown if needed -->
+    </ul>
+</li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                         href="pages-blank.html" aria-expanded="false"><i
                             class="mdi me-2 mdi-book-open-variant"></i><span class="hide-menu">Blank</span></a>
@@ -109,11 +120,7 @@
                         href="pages-error-404.html" aria-expanded="false"><i
                             class="mdi me-2 mdi-help-circle"></i><span class="hide-menu">Error 404</span></a>
                 </li>
-                <li class="text-center p-20 upgrade-btn">
-                    <a href="https://www.wrappixel.com/templates/materialpro/" class="btn btn-warning text-white mt-4"
-                        target="_blank">Upgrade to
-                        Pro</a>
-                </li>
+
             </ul>
 
         </nav>
