@@ -30,14 +30,6 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label for="image">Image</label>
-                        <input type="file" name="image" class="form-control" >
-                        @if ($errors->has('image'))
-                            <span class="text-danger">{{ $errors->first('image') }}</span>
-                        @endif
-                    </div>
-
-                    <div class="form-group mt-2">
                         <label for="price">Price</label>
                         <input type="text" name="price" class="form-control" value="{{ old('price') }}" >
                         @if ($errors->has('price'))

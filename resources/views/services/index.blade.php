@@ -6,74 +6,78 @@
 <div class="page-wrapper">
     <div class="container-fluid">
 
-       <div class="card">
-        <div class="d-flex justify-content-end my-4 mx-2 ">
-            <a href="{{ route('services.create') }}" class="btn btn-info text-white">
-                <i class="fas fa-plus"></i> Add New Service
-            </a>
-        </div>
-        <div class="card-header">
-          <h4>All Services</h4>
+        <div class="card">
+            <div class="d-flex justify-content-end my-4 mx-2 ">
+                <a href="{{ route('services.create') }}" class="btn btn-info text-white">
+                    <i class="fas fa-plus"></i> Add New Service
+                </a>
+            </div>
+            <div class="card-header">
+                <h4>All Services</h4>
             </div>
             <div class="card-body">
-                 <!-- Button to Redirect to Create Service Page -->
-      
+                <!-- Button to Redirect to Create Service Page -->
 
-        <!-- Display All Services -->
-        <div class="mt-5">
-           
-            <table class="table table-strip mt-3">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Image</th>
-                        <th>Price</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($services as $service)
-                        <tr>
-                            <td>{{ $service->id }}</td>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ $service->description }}</td>
-                            <td>
-                               <img src="{{ asset('storage/images/' . $service->image) }}" alt="{{ $service->name }}" width="50">
-                            </td>
-                            <td>{{number_format( $service->price) }} Rs/-</td>
-                            <td>{{ $service->duration }}</td>
-                            <td>{{ $service->status }}</td>
-                            <td>
-                                <!-- Edit Icon to Trigger Modal -->
-                                <a href="javascript:void(0);" onclick="editService({{ $service->id }}, '{{ $service->name }}', '{{ $service->description }}', '{{ $service->price }}', '{{ $service->duration }}', '{{ $service->status }}', '{{ $service->category_id }}')" class="text-warning me-2" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
 
-                                <!-- Delete Icon to Trigger Confirmation -->
-                                <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="text-danger" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
+                <!-- Display All Services -->
+                <div class="mt-5">
 
-                                <!-- Form to Submit Delete Request (Hidden) -->
-                                <form id="delete-form-{{ $service->id }}" action="{{ route('services.destroy', $service->id) }}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    <table class="table table-strip mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                           
+                                <th>Price</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($services as $service)
+                                <tr>
+                                    <td>{{ $service->id }}</td>
+                                    <td>{{ $service->name }}</td>
+                                    <td>{{ $service->description }}</td>
+
+                                    <td>{{ number_format($service->price) }} Rs/-</td>
+                                    <td>{{ $service->duration }}</td>
+                                    <td>{{ $service->status }}</td>
+                                    <td>
+                                        <!-- Edit Icon to Trigger Modal -->
+                                        <a href="javascript:void(0);"
+                                            onclick="editService({{ $service->id }}, '{{ $service->name }}', '{{ $service->description }}', '{{ $service->price }}', '{{ $service->duration }}', '{{ $service->status }}', '{{ $service->category_id }}')"
+                                            class="text-warning me-2" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        <!-- Delete Icon to Trigger Confirmation -->
+                                        <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})"
+                                            class="text-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+
+                                        <!-- Form to Submit Delete Request (Hidden) -->
+                                        <form id="delete-form-{{ $service->id }}"
+                                            action="{{ route('services.destroy', $service->id) }}" method="POST"
+                                            style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-       </div>
+        </div>
 
         <!-- Edit Service Modal -->
-        <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -99,7 +103,8 @@
                             </div>
                             <div class="form-group mt-2">
                                 <label for="duration">Duration</label>
-                                <input type="text" name="duration" id="serviceDuration" class="form-control" required>
+                                <input type="text" name="duration" id="serviceDuration" class="form-control"
+                                    required>
                             </div>
                             <div class="form-group mt-2">
                                 <label for="status">Status</label>

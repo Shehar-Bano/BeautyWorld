@@ -24,7 +24,6 @@ class UpdateServiceRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'image' => 'nullable', // Validate image type and size
             'price' => 'required|numeric|min:0', // Validate price as numeric and not negative
             'duration' => 'required|string', // Validate time format
             'category_id' => 'required|exists:service_categories,id', // Validate category ID

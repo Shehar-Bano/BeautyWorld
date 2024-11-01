@@ -37,10 +37,6 @@ class ServiceController extends Controller
      */
     public function store(AddServiceRequest $request)
     {
-        if($request->hasFile('image')){
-            $image = $request->file('image')->store('images/services','public');
-            $request->merge(['image' => $image]);
-        }
         Service::create($request->validated());
         return redirect()->route('services.index')->with('success', 'Service created successfully');
     }
@@ -61,10 +57,7 @@ class ServiceController extends Controller
     public function update(UpdateServiceRequest $request,$id)
     {
         $service = Service::find($id);
-        if($request->hasFile('image')){
-            $image = $request->file('image')->store('images/services','public');
-            $request->merge(['image' => $image]);
-        }
+      
             $service->update($request->validated());
             return redirect()->route('services.index')->with('success', 'Service updated successfully');
 

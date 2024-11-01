@@ -41,20 +41,20 @@
                                 <td>{{ $category->name }}</td>
                                 <td>
                                     <!-- Edit Icon to Trigger Modal -->
-                                    <a href="javascript:void(0);" onclick="editCategory({{ $category->id }}, '{{ $category->name }}')" 
+                                    <a href="javascript:void(0);" onclick="editCategory({{ $category->id }}, '{{ $category->name }}')"
                                        class="text-warning me-2" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     
                                     <!-- Delete Icon to Trigger Confirmation -->
-                                    <a href="javascript:void(0);" onclick="confirmDelete({{ $category->id }})" 
+                                    <a href="javascript:void(0);" onclick="confirmDelete({{ $category->id }})"
                                        class="text-danger" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 
                                     <!-- Form to Submit Delete Request (Hidden) -->
-                                    <form id="delete-form-{{ $category->id }}" 
-                                          action="{{ route('service_categories.destroy', $category->id) }}" 
+                                    <form id="delete-form-{{ $category->id }}"
+                                          action="{{ route('service_categories.destroy', $category->id) }}"
                                           method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
