@@ -11,12 +11,15 @@ class Deal extends Model
         'name',
         'description',
         'dis_price',
-        'type',
         'duration',
     ];
     public function dealService()
     {
         return $this->hasMany(DealService::class);
+    }
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'deal_services', 'deal_id', 'service_id');
     }
 
 }

@@ -6,6 +6,7 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Services\DealService;
 use App\Services\DealServicePakage;
+use Illuminate\Support\Facades\Log;
 
 class DealController extends Controller
 {
@@ -31,7 +32,7 @@ class DealController extends Controller
             'name' => 'required',
             'description' => 'required',
             'dis_price' => 'required',
-            'type' => 'required',
+            
             'services' => 'required|array',
             'duration' => 'nullable|string' // Optional field for duration
         ]);
@@ -51,18 +52,20 @@ class DealController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'description' => 'required',
-            'dis_price' => 'required',
-            'type' => 'required',
+            'description' => 'required|string',
+            'dis_price' => 'required|numeric',
             'services' => 'required|array',
-            'duration' => 'nullable|string' // Optional field for duration
+            'services.*' => 'exists:services,id'
         ]);
 
-        // Call the service to handle business logic
-        $this->deal->updateDeal($validatedData, $id);
 
-        return redirect('/deal')->with('success', 'successfully updated deal');
+        // Log the validated data for debugging
+
+        $this->deal->updateDeal($id, $validatedData);
+
+        return redirect('/deal')->with('success', 'Successfully updated deal');
     }
+
     public function destroy($id)
     {
         $this->deal->deleteDeal($id);

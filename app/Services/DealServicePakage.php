@@ -27,12 +27,6 @@ class DealServicePakage
         $deal->name = $validatedData['name'];
         $deal->description = $validatedData['description'];
         $deal->dis_price = $validatedData['dis_price'];
-        $deal->type = $validatedData['type'];
-
-        // If the type is 'duration', also save the duration
-        if ($validatedData['type'] == 'duration') {
-            $deal->duration = $validatedData['duration'];
-        }
 
         // Save the Deal
         $deal->save();
@@ -54,28 +48,31 @@ class DealServicePakage
 
     public function updateDeal($id, $validatedData)
     {
+        // Find the existing Deal by ID
         $deal = Deal::find($id);
+
+        // Update Deal details
         $deal->name = $validatedData['name'];
         $deal->description = $validatedData['description'];
         $deal->dis_price = $validatedData['dis_price'];
-        $deal->type = $validatedData['type'];
-
-        // If the type is 'duration', also save the duration
-        if ($validatedData['type'] == 'duration') {
-            $deal->duration = $validatedData['duration'];
-        }
+        
+        // Save the Deal updates
         $deal->save();
-        foreach ($validatedData['services'] as $serviceId) {
-            if (DealService::where('deal_id', $id)) {
-                DealService::find('$id')->update([
-                    'service_id' => $serviceId, // Correctly assign service_id
-                ]);
-            }
 
+        // Sync the selected services in the deal_services table
+        if (isset($validatedData['services'])) {
+            $deal->services()->sync($validatedData['services']); // Sync services in deal_services table
+        } else {
+            // If no services are selected, detach all services
+            $deal->services()->detach();
         }
 
-        return $deal;
+        return $deal; // Return the updated deal
     }
+
+
+
+
 
     public function deleteDeal($id)
     {

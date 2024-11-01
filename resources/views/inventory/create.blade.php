@@ -2,10 +2,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f6f9;
-    }
+   
     .form-wrapper {
         margin: 50px auto;
         max-width: 800px; /* Adjust for larger width like table */
@@ -78,7 +75,7 @@
                     </div>
                     <button type="submit" class="btn btn-submit">Add product</button>
                 </form>
-                
+
             </div>
         </div>
     </div>

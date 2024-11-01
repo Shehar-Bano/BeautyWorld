@@ -2,10 +2,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f6f9;
-    }
+
     .form-wrapper {
         margin: 50px auto;
         max-width: 800px; /* Adjust for larger width like table */
@@ -68,18 +65,7 @@
                         <label for="name">Description</label>
                         <input type="textarea" class="form-control" id="description" name="description"  placeholder="Enter Description" required>
                     </div>
-                    <div class="form-group">
-                        <label for="status">Deal Type</label>
-                        <select class="form-control" id="type" name="type" required>
-                            <option value="permanent">Permanent</option>
-                            <option value="duration">Duration</option>
-                        </select>
-                    </div>
 
-                    <div class="form-group" id="duration-field" style="display: none;">
-                        <label for="name">Duration</label>
-                        <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter Duration">
-                    </div>
                     <div class="form-group">
                         <label for="services">Select Services:</label><br>
                         <div class="form-check">
@@ -128,27 +114,5 @@
         });
     @endif
 </script>
-<script>
-    // Get the select and the duration field
-    var dealTypeSelect = document.getElementById("type");
-    var durationField = document.getElementById("duration-field");
 
-    // Add an event listener to detect changes in the Deal Type selection
-    dealTypeSelect.addEventListener("change", function() {
-        if (dealTypeSelect.value === "duration") {
-            // Show the duration field if "Duration" is selected
-            durationField.style.display = "block";
-        } else {
-            // Hide the duration field if "Permanent" is selected
-            durationField.style.display = "none";
-        }
-    });
-
-    // Initial check to hide the duration field on page load if not selected
-    window.onload = function() {
-        if (dealTypeSelect.value !== "duration") {
-            durationField.style.display = "none";
-        }
-    };
-</script>
 @include('view.script')

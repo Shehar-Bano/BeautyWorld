@@ -3,12 +3,14 @@
 use Illuminate\Support\Str;
 @endphp
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRyXxbr6p5liEm5E8m5S0c8Fof1szar/lbiNpU7zm" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f6f9;
-    }
+
     .table-wrapper {
         margin: 20px auto;
         max-width: 900px;
@@ -65,7 +67,7 @@ use Illuminate\Support\Str;
     .delete-icon {
         color: #ff5a5f;
     }
-    .delete-icon button {
+    .delete-icon {
         background: none;
         border: none;
         padding: 0;
@@ -90,8 +92,8 @@ use Illuminate\Support\Str;
                     <tr>
                         <th>#</th>
                         <th>Deal Name</th>
-                        <th>Services</th>
-                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Price</th>
                         <th>Description</th>
                         <th>Action</th>
                     </tr>
@@ -101,26 +103,15 @@ use Illuminate\Support\Str;
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $deal->name }}</td>
-                            <td >
-                            @foreach ( $deal->dealService  as $dealService )
-                                <span class="badge badge-info">{{$dealService->service->name}} </span>
-                            @endforeach
-                        </td>
-                            <td>{{ $deal->type }}
-                                <br>
-                                @if ($deal->type == 'duration')
-                                (<b>{{$deal->duration}}</b>)
-
-                                @endif
-                            </td>
-
-                            <td>{{  \Illuminate\Support\Str::words($deal->description, 4, '...') }}</td>
-
+                            <td>{{ \Carbon\Carbon::parse($deal->created_at)->format('Y-m-d') }}</td>
+                            <td>{{ $deal->dis_price }}</td>
+                            <td>{{ \Illuminate\Support\Str::words($deal->description, 3, '...') }}</td>
                             <td class="action-icons">
                                 <!-- Edit Icon -->
                                 <a href="{{ route('deals.edit', $deal->id) }}" class="edit-icon">
                                     <i class="fas fa-edit"></i>
                                 </a>
+
                                 <!-- Delete Icon -->
                                 <form action="{{ route('deals.delete', $deal->id) }}" method="POST" style="display:inline;">
                                     @csrf
@@ -129,10 +120,42 @@ use Illuminate\Support\Str;
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+
+                                <!-- Toggle Button -->
+                                <button type="button" class="btn toggle-icon" data-toggle="collapse" data-target="#serviceDetails-{{ $deal->id }}">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Collapsible row for additional service information -->
+                        <tr id="serviceDetails-{{ $deal->id }}" class="collapse">
+                            <td colspan="6">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Service Name</th>
+                                            <th>Price</th>
+                                            <th>Duration</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($deal->dealService as $dealService)
+                                            <tr>
+                                                <td>{{ $dealService->service->name }}</td>
+                                                <td>{{ $dealService->service->price }}</td>
+                                                <td>{{ $dealService->service->duration }}</td>
+                                                <td>{{ $dealService->service->description }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
+
             </table>
         </div>
 {{-- ///////////////////till here////////// --}}

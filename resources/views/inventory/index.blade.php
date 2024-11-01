@@ -2,10 +2,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f6f9;
-    }
+   
     .table-wrapper {
         margin: 20px auto;
         max-width: 900px;

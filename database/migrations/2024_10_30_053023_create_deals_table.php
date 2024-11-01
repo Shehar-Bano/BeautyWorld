@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('dis_price');
-            $table->enum('type',['permanent','duration']);
             $table->string('duration')->nullable();
             $table->text('description');
             $table->timestamps();
