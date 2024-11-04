@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-header">Add Category</div>
             <div class="card-body">
-                <form action="{{ route('service_categories.store') }}" method="POST">
+                <form action="{{ route('expence_categories.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="name">Category Name</label>
