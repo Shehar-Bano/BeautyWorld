@@ -29,6 +29,7 @@
                         </li>
                     </ul>
                 </li>
+                {{-- @if ($user->hasRole('admin')) --}}
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                     href="{{ url('/role') }}" aria-expanded="false">
                     <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Role</span></a>
@@ -49,13 +50,13 @@
     href="{{ route('inventories.index') }}" aria-expanded="false">
     <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Inventories</span></a>
 </li>
-    @endif
-    @if ($user->hasRole('admin') || $user->hasRole('manager'))
+    {{-- @endif --}}
+    {{-- @if ($user->hasRole('admin') || $user->hasRole('manager')) --}}
     <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
         href="{{ route('deals.index') }}" aria-expanded="false">
         <i class="mdi me-2 mdi-account-check"></i><span class="hide-menu">Deals</span></a>
     </li>
-    @endif
+    {{-- @endif --}}
                 <!-- Manage Services Section -->
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"

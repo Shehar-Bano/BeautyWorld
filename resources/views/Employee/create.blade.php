@@ -127,3 +127,5 @@
     @endif
 </script>
 @include('view.script')
+
+

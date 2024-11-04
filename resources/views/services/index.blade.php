@@ -1,11 +1,8 @@
 @include('view.head')
-
 @include('view.topbar')
 @include('view.sidebar')
-
 <div class="page-wrapper">
     <div class="container-fluid">
-
         <div class="card">
             <div class="d-flex justify-content-end my-4 mx-2 ">
                 <a href="{{ route('services.create') }}" class="btn btn-info text-white">
@@ -17,18 +14,14 @@
             </div>
             <div class="card-body">
                 <!-- Button to Redirect to Create Service Page -->
-
-
                 <!-- Display All Services -->
                 <div class="mt-5">
-
                     <table class="table table-strip mt-3">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Description</th>
-                           
                                 <th>Price</th>
                                 <th>Duration</th>
                                 <th>Status</th>
@@ -41,7 +34,6 @@
                                     <td>{{ $service->id }}</td>
                                     <td>{{ $service->name }}</td>
                                     <td>{{ $service->description }}</td>
-
                                     <td>{{ number_format($service->price) }} Rs/-</td>
                                     <td>{{ $service->duration }}</td>
                                     <td>{{ $service->status }}</td>
@@ -52,13 +44,11 @@
                                             class="text-warning me-2" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-
                                         <!-- Delete Icon to Trigger Confirmation -->
                                         <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})"
                                             class="text-danger" title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
-
                                         <!-- Form to Submit Delete Request (Hidden) -->
                                         <form id="delete-form-{{ $service->id }}"
                                             action="{{ route('services.destroy', $service->id) }}" method="POST"
@@ -74,7 +64,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Edit Service Modal -->
         <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel"
             aria-hidden="true">
@@ -131,12 +120,9 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
 @include('view.script')
-
 <script>
     // Function to open the edit modal and fill the form with data
     function editService(id, name, description, price, duration, status, categoryId) {
@@ -151,7 +137,6 @@
         var editServiceModal = new bootstrap.Modal(document.getElementById('editServiceModal'));
         editServiceModal.show();
     }
-
     // SweetAlert for Delete Confirmation
     function confirmDelete(id) {
         Swal.fire({
@@ -160,7 +145,7 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            cancelButtonColor: '#3085D6',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -169,7 +154,6 @@
         });
     }
 </script>
-
 <script>
     // Check if there is a session message
     @if (session('success'))

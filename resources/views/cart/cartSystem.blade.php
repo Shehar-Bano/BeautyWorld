@@ -55,8 +55,6 @@
                             <thead>
                                 <tr>
                                     <th>Service</th>
-                                   
-                                    <th>Tax</th>
                                     <th>Amount</th>
                                     <th>Action</th>
                                 </tr>
@@ -69,20 +67,65 @@
                         <!-- Cart Summary -->
                         <div class="d-flex justify-content-between py-3 border-top">
 
-                            <div><strong>Tax:</strong> <span id="totalTax">0</span> PKR</div>
-                            <div><strong>Amount:</strong> <span id="totalAmount">0</span> PKR</div>
                             <div><strong>Grand Total:</strong> <span id="grandTotal">0</span> PKR</div>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#holdBillModal">Hold Bill</button>
-                            <button class="btn btn-success">Update Cart</button>
+                            <!-- Confirm Order Button Trigger -->
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmOrderModal">Confirm Order</button>
+
+                            <form id="updateCartForm" action="{{ route('cart.update') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    
+                                    <input type="hidden" class="form-control" id="fetchSeat" name="seatNumber" required>
+                                </div>
+                                <!-- Hidden input to hold cart items array -->
+                                <input type="hidden" id="updatedcartItems" name="cartItems">
+                                <button type="submit" class="btn btn-primary">Update Cart</button>
+                            </form>
+                           
                             <button class="btn btn-danger" onclick="emptyCart()">Empty Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Hold Bill Button Trigger -->
+        <!-- Confirm Order Modal -->
+<div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmOrderModalLabel">Confirm Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="confirmOrderForm" action="{{ route('cart.order.confirm') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="confirmSeatNumber" class="form-label">Seat Number</label>
+                        <input type="text" class="form-control" id="confirmSeatNumber" name="seatNumber" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customerName" class="form-label">Customer Name</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customerEmail" class="form-label">Customer Email</label>
+                        <input type="email" class="form-control" id="customerEmail" name="customerEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customerPhone" class="form-label">Customer Phone</label>
+                        <input type="tel" class="form-control" id="customerPhone" name="customerPhone" required>
+                    </div>
+                    <!-- Hidden input to hold cart items array -->
+                    <input type="hidden" id="confirmCartItems" name="cartItems">
+                    <button type="submit" class="btn btn-primary w-100">Confirm Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Hold Bill Modal -->
@@ -102,7 +145,7 @@
                     </div>
                     <!-- Hidden input to hold cart items array -->
                     <input type="hidden" id="cartItems" name="cartItems">
-                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    <button type="submit" class="btn btn-primary w-100">Add Seat</button>
                 </form>
             </div>
         </div>
@@ -221,20 +264,20 @@
 
        
         let totalAmount = 0;
-        let totalTax = 0;
+    
 
         cart.forEach(item => {
             let itemTotal = item.price;
-            let itemTax = Math.round(itemTotal * 0.05);
+
           
             totalAmount += itemTotal;
-            totalTax += itemTax;
+            
 
             cartTable.innerHTML += `
                 <tr>
                     <td>${item.name}</td>
 
-                    <td>${itemTax}</td>
+                   
                     <td>${itemTotal}</td>
                     
                     <td><i class="fa fa-trash text-danger" aria-hidden="true" onclick="removeFromCart(${item.id})"></i></td>
@@ -242,9 +285,9 @@
             `;
         });
 
-        document.getElementById('totalTax').innerText = totalTax;
-        document.getElementById('totalAmount').innerText = totalAmount;
-        document.getElementById('grandTotal').innerText = totalAmount + totalTax;
+      
+       
+        document.getElementById('grandTotal').innerText = totalAmount ;
     }
 
     function updateQuantity(productId, change) {
@@ -274,6 +317,11 @@
         // Store cart item IDs in the hidden input field
         document.getElementById('cartItems').value = JSON.stringify(cart.map(item => item.id));
     });
+    document.getElementById('updateCartForm').addEventListener('submit', function () {
+        // Store cart item IDs in the hidden input field
+        document.getElementById('updatedcartItems').value = JSON.stringify(cart.map(item => item.id));
+    });
+  
 /////////////////////////////////fetching seat numbers
 
 function fetchSeatNumbers() {
@@ -312,10 +360,14 @@ function fetchSeatNumbers() {
             price: item.price,
             tax: item.tax
         }));
+       const fetchedSeatNumber = seatNumber;
+console.log(fetchedSeatNumber);
+
 
         // Render the cart items in the shopping cart
         renderCart();
-
+         const fetchSeat = document.getElementById('fetchSeat');
+        fetchSeat.value = seatNumber;
         // Close the modal after loading the cart items
         const seatNumbersModal = new bootstrap.Modal(document.getElementById('seatNumbersModal'));
         seatNumbersModal.hide();
@@ -323,6 +375,19 @@ function fetchSeatNumbers() {
     .catch(error => console.error('Error fetching cart items:', error));
 }
 
+// When the "Confirm Order" form is submitted, prepare cart items for form submission
+document.getElementById('confirmOrderForm').addEventListener('submit', function () {
+    // Store cart item IDs in the hidden input field for confirming order
+    document.getElementById('confirmCartItems').value = JSON.stringify(cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+       
+    })));
+    
+    // Set the current seat number
+    document.getElementById('confirmSeatNumber').value = document.getElementById('seatNumber').value;
+});
 
 
 
