@@ -14,7 +14,7 @@ class ExpenceCategoryController extends Controller
     public function index()
     {
         $categories=ExpenceCategory::get();
-        return view('services.category.index',compact('categories'));
+        return view('expence.category.index',compact('categories'));
     }
 
 

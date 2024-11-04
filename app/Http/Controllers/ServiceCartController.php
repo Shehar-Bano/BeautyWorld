@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItems;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -11,13 +12,18 @@ use Illuminate\Support\Facades\Session;
 
 class ServiceCartController extends Controller
 {
+    public function index()
+    {
+        $services = Service::get();
+        return view('cart.index', compact('services'));
+    }
     public function addToCart(Request $request)
     {
         $validated = $request->validate([
             'seatNumber' => 'required|string',
             'cartItems' => 'required|json'
         ]);
-    
+
         $seatNumber = $validated['seatNumber'];
         $services = json_decode($validated['cartItems'], true);
 
@@ -34,9 +40,9 @@ class ServiceCartController extends Controller
             },$services);
             CartItems::insert( $cartItems);
         });
-        
+
         return redirect()->back()->with('items set on hold successfully');
-    
+
     }
 
     public function getSeatNumbers(){
