@@ -3,6 +3,8 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ExpenceCategoryController;
+use App\Http\Controllers\ExpenceController;
 use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -85,6 +87,22 @@ Route::prefix('deal')->name('deals.')->group(function () {
     Route::get('/edit/{id}', [DealController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [DealController::class, 'update'])->name('update');
     Route::delete('/delete/{id}',[DealController::class, 'destroy'])->name('delete');
+});
+Route::prefix('expence_category')->name('expence_categories.')->group(function () {
+    Route::get('/', [ExpenceCategoryController::class, 'index'])->name('index');
+    Route::get('/create',[ExpenceCategoryController::class, 'create'])->name('create');
+    Route::post('/store',[ExpenceCategoryController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [ExpenceCategoryController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [ExpenceCategoryController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}',[ExpenceCategoryController::class, 'destroy'])->name('delete');
+});
+Route::prefix('expence')->name('expences.')->group(function () {
+    Route::get('/', [ExpenceController::class, 'index'])->name('index');
+    Route::get('/create',[ExpenceController::class, 'create'])->name('create');
+    Route::post('/store',[ExpenceController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [ExpenceController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [ExpenceController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}',[ExpenceController::class, 'destroy'])->name('delete');
 });
 
 ///////////////////services/////////////////

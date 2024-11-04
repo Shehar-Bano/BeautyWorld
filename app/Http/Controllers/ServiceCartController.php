@@ -15,10 +15,11 @@ class ServiceCartController extends Controller
 {
     public function index()
     {
+
         $user=Auth::user();
         $services=Service::get();
         return view('cart.cartSystem',compact('user','services'));
-    }
+  }
     public function addToCart(Request $request)
     {
 
@@ -26,7 +27,7 @@ class ServiceCartController extends Controller
             'seatNumber' => 'required|string',
             'cartItems' => 'required|json'
         ]);
-    
+
         $seatNumber = $validated['seatNumber'];
         $services = json_decode($validated['cartItems'], true);
         DB::transaction(function() use($seatNumber, $services){
@@ -41,8 +42,12 @@ class ServiceCartController extends Controller
             },$services);
             CartItems::insert( $cartItems);
         });
-        
-        return redirect()->back()->with('items set on hold successfully'); }
+
+
+        return redirect()->back()->with('items set on hold successfully');
+
+    }
+
 
     public function getSeatNumbers(){
         $seatNumbers = Cart::pluck('seat_number');
