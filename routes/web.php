@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ServiceCartController;
 use App\Http\Controllers\ServiceCategoryController;
 
 Route::get('/', function () {
@@ -26,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require_once __DIR__ . '/auth.php';
 
 Route::prefix('permission')->name('permissions.')->group(function () {
     Route::get('/', [PermissionController::class, 'index'])->name('index');
@@ -38,21 +40,21 @@ Route::prefix('permission')->name('permissions.')->group(function () {
 });
 Route::prefix('role')->name('roles.')->group(function () {
     Route::get('/', [RoleController::class, 'index'])->name('index');
-    Route::get('/create',[RoleController::class, 'create'])->name('create');
-    Route::post('/store',[RoleController::class, 'store'])->name('store');
+    Route::get('/create', [RoleController::class, 'create'])->name('create');
+    Route::post('/store', [RoleController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [RoleController::class, 'show'])->name('edit');
     Route::post('/update/{id}', [RoleController::class, 'update'])->name('update');
-    Route::delete('/delete/{id}',[RoleController::class, 'destroy'])->name('delete');
+    Route::delete('/delete/{id}', [RoleController::class, 'destroy'])->name('delete');
 });
 
-Route::prefix('role-permission')->name('role.permission.')->group(function() {
+Route::prefix('role-permission')->name('role.permission.')->group(function () {
     Route::get('/', [RolePermissionController::class, 'index'])->name('index');
     Route::get('/form', [RolePermissionController::class, 'create'])->name('form');
     Route::post('/', [RolePermissionController::class, 'store'])->name('store');
     Route::get('/show/{id}', [RolePermissionController::class, 'show'])->name('show');
     Route::put('/update/{id}', [RolePermissionController::class, 'update'])->name('update');
 });
-Route::prefix('user-role')->name('user.role.')->group(function() {
+Route::prefix('user-role')->name('user.role.')->group(function () {
     Route::get('/', [RoleUserController::class, 'index'])->name('index');
     Route::get('/form', [RoleUserController::class, 'create'])->name('form');
     Route::post('/', [RoleUserController::class, 'store'])->name('store');
@@ -62,11 +64,11 @@ Route::prefix('user-role')->name('user.role.')->group(function() {
 });
 Route::prefix('employee')->name('employees.')->group(function () {
     Route::get('/', [EmployeeController::class, 'index'])->name('index');
-    Route::get('/create',[EmployeeController::class, 'create'])->name('create');
-    Route::post('/store',[EmployeeController::class, 'store'])->name('store');
+    Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+    Route::post('/store', [EmployeeController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('update');
-    Route::delete('/delete/{id}',[EmployeeController::class, 'destroy'])->name('delete');
+    Route::delete('/delete/{id}', [EmployeeController::class, 'destroy'])->name('delete');
 });
 Route::prefix('inventory')->name('inventories.')->group(function () {
     Route::get('/', [InventoryController::class, 'index'])->name('index');
@@ -89,7 +91,26 @@ Route::prefix('deal')->name('deals.')->group(function () {
 //------------------category--------------//
 Route::resource('service_categories', ServiceCategoryController::class)->names([
     'store' => 'service_categories.store',
-    'destroy'=>'service_categories.destroy'
+    'destroy' => 'service_categories.destroy'
 ]);
 //----------------Service-------------//
-Route::resource('services',ServiceController::class);
+Route::resource('services', ServiceController::class);
+
+/////////////////////orders////////////////////////////
+//-----------------Cart------------------//
+
+Route::prefix('carts')->name('cart.')->controller(ServiceCartController::class)->group(function () {
+    Route::get('/get-seat-numbers',  'getSeatNumbers')->name('seat.numbers');
+    Route::get('/get-cart-items/{seatNumber}', 'getCartItemsForSeat');
+   
+Route::post('/cart-update',  'update')->name('cart.update');
+
+
+Route::post('/cart/add', 'addToCart')->name('add');
+
+Route::post('/cart/remove', 'removeFromCart')->name('remove');
+Route::post('/cart/empty', 'emptyCart')->name('empty');
+});
+
+
+

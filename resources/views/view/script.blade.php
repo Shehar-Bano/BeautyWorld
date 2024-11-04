@@ -24,6 +24,7 @@
     <!--Custom JavaScript -->
     <script src="js/pages/dashboards/dashboard1.js"></script>
     <script src="js/custom.js"></script>
+    
 </body>
 
 </html>

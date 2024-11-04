@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceCategory extends Model
+class CartItems extends Model
 {
     protected $fillable=[
-        'name',
+        'service_id',
+        'cart_id'
     ];
-
     public function service()
-    {
-        return $this->hasMany(Service::class);
-    }
+{
+    return $this->belongsTo(Service::class, 'service_id');
+}
 }
