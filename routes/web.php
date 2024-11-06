@@ -123,13 +123,13 @@ Route::prefix('carts')->name('cart.')->controller(ServiceCartController::class)-
     Route::get('/', 'index')->name('index');
     Route::get('/get-seat-numbers',  'getSeatNumbers')->name('seat.numbers');
     Route::get('/get-cart-items/{seatNumber}', 'getCartItemsForSeat');
-
-Route::post('/cart-update',  'update')->name('cart.update');
+   
+Route::post('/cart-update',  'update')->name('update');
 
 
 Route::post('/cart/add', 'addToCart')->name('add');
 
-Route::post('/cart/remove', 'removeFromCart')->name('remove');
+Route::post('/confirm-order', 'confirmOrder')->name('order.confirm');
 Route::post('/cart/empty', 'emptyCart')->name('empty');
 });
 

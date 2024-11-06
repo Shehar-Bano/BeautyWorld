@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     protected $fillable=[
+        'id',
         'name' ,
             'description',
             'image', // Validate image type and size
