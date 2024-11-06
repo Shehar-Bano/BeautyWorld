@@ -7,16 +7,6 @@
     <div class="container-fluid">
         <!-- Customer and Product Search Section -->
         <div class="row mb-3">
-           
-            
-            <div class="col-md-3">
-                <select class="form-control">
-                    <option>All Category</option>
-                    <!-- Add other categories here -->
-                </select>
-            </div>
-        </div>
-
         <!-- Main Content: Product List and Cart -->
         <div class="row  mx-auto">
             
@@ -85,10 +75,10 @@
                         <div class="d-flex justify-content-between mt-4">
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#holdBillModal">Hold Bill</button>
                             <!-- Confirm Order Button Trigger -->
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmOrderModal">Confirm Order</button>
+                            <button class="btn btn-success  text-white " data-bs-toggle="modal" data-bs-target="#confirmOrderModal">Confirm Order</button>
                          
                            
-                            <button class="btn btn-danger" onclick="emptyCart()">Empty Cart</button>
+                            <button class="btn btn-danger  text-white " onclick="emptyCart()">Empty Cart</button>
                         </div>
                     </div>
                 </div>
@@ -106,35 +96,55 @@
                     @csrf
                     <div class="mb-3">
                         <label for="confirmSeatNumber" class="form-label">Seat Number (if Any)</label>
-                        <input type="text" class="form-control" id="confirmSeatNumber" name="seatNumber">
+                        <input type="text" class="form-control" id="confirmSeatNumber" name="seatNumber" value="{{ old('seatNumber') }}">
+                        @error('seatNumber')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
+            
                     <div class="mb-3">
                         <label for="customerName" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" id="customerName" name="customerName" required>
+                        <input type="text" class="form-control" id="customerName" name="customerName" value="{{ old('customerName') }}" required>
+                        @error('customerName')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
+            
                     <div class="mb-3">
                         <label for="customerEmail" class="form-label">Customer Email</label>
-                        <input type="email" class="form-control" id="customerEmail" name="customerEmail" required>
+                        <input type="email" class="form-control" id="customerEmail" name="customerEmail" value="{{ old('customerEmail') }}" required>
+                        @error('customerEmail')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
+            
                     <div class="mb-3">
                         <label for="customerPhone" class="form-label">Customer Phone</label>
-                        <input type="tel" class="form-control" id="customerPhone" name="customerPhone" required>
+                        <input type="tel" class="form-control" id="customerPhone" name="customerPhone" value="{{ old('customerPhone') }}" required>
+                        @error('customerPhone')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
+            
                     <div class="mb-3">
                         <label for="provider" class="form-label">Select Provider</label>
                         <select class="form-control" id="provider" name="provider_id" required>
                             <option value="">Choose a provider</option>
                             @foreach($providers as $provider)
-                                <option value="{{ $provider->id }}">{{ $provider->name }}</option>
+                                <option value="{{ $provider->id }}" {{ old('provider_id') == $provider->id ? 'selected' : '' }}>{{ $provider->name }}</option>
                             @endforeach
                         </select>
+                        @error('provider_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
             
                     <!-- Hidden input to hold cart items array -->
-                    <input type="hidden" id="confirmCartItems" name="cartItems">
-                    <button type="submit" class="btn btn-primary w-100">Confirm Order</button>
+                    <input type="hidden" id="confirmCartItems" name="cartItems" value="{{ old('cartItems') }}">
+                    <button type="submit" class="btn btn-primary text-white w-100">Confirm Order</button>
                 </form>
             </div>
+            
             
         </div>
     </div>

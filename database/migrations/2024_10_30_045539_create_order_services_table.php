@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references("id")->on('orders')->cascadeOnDelete();
             $table->unsignedBigInteger('service_id');
-            $table->string('seat_number')->nullable();
             $table->foreign('service_id')->references("id")->on('services')->cascadeOnDelete();
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references("id")->on('users')->cascadeOnDelete();
