@@ -13,4 +13,8 @@ class Orders extends Model
         'total_payment',
         'date'
     ];
+    public function orderService()
+    {
+        return $this->hasMany(OrderService::class,'order_id');
+    }
 }
