@@ -33,6 +33,18 @@
                             <div class="text-end mb-3">
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#seatNumbersModal" onclick="fetchSeatNumbers()">Hold List</button>
                             </div>
+                            <div class="mb-3">
+                                <form id="updateCartForm" action="{{ route('cart.update') }}" method="POST">
+                                    @csrf
+                                   
+                                        
+                                        <input type="hidden" class="form-control" id="fetchSeat" name="seatNumber" required>
+                                  
+                                    <!-- Hidden input to hold cart items array -->
+                                    <input type="hidden" id="updatedcartItems" name="cartItems">
+                                    <button type="submit" class="btn btn-primary">Update Cart</button>
+                                </form>
+                            </div>
                            
                             <div class="modal fade" id="seatNumbersModal" tabindex="-1" aria-labelledby="seatNumbersModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -74,17 +86,7 @@
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#holdBillModal">Hold Bill</button>
                             <!-- Confirm Order Button Trigger -->
                             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmOrderModal">Confirm Order</button>
-
-                            <form id="updateCartForm" action="{{ route('cart.update') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    
-                                    <input type="hidden" class="form-control" id="fetchSeat" name="seatNumber" required>
-                                </div>
-                                <!-- Hidden input to hold cart items array -->
-                                <input type="hidden" id="updatedcartItems" name="cartItems">
-                                <button type="submit" class="btn btn-primary">Update Cart</button>
-                            </form>
+                         
                            
                             <button class="btn btn-danger" onclick="emptyCart()">Empty Cart</button>
                         </div>
@@ -103,8 +105,8 @@
                 <form id="confirmOrderForm" action="{{ route('cart.order.confirm') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="confirmSeatNumber" class="form-label">Seat Number</label>
-                        <input type="text" class="form-control" id="confirmSeatNumber" name="seatNumber" required>
+                        <label for="confirmSeatNumber" class="form-label">Seat Number (if Any)</label>
+                        <input type="text" class="form-control" id="confirmSeatNumber" name="seatNumber">
                     </div>
                     <div class="mb-3">
                         <label for="customerName" class="form-label">Customer Name</label>
@@ -118,11 +120,22 @@
                         <label for="customerPhone" class="form-label">Customer Phone</label>
                         <input type="tel" class="form-control" id="customerPhone" name="customerPhone" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="provider" class="form-label">Select Provider</label>
+                        <select class="form-control" id="provider" name="provider_id" required>
+                            <option value="">Choose a provider</option>
+                            @foreach($providers as $provider)
+                                <option value="{{ $provider->id }}">{{ $provider->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+            
                     <!-- Hidden input to hold cart items array -->
                     <input type="hidden" id="confirmCartItems" name="cartItems">
                     <button type="submit" class="btn btn-primary w-100">Confirm Order</button>
                 </form>
             </div>
+            
         </div>
     </div>
 </div>
@@ -275,6 +288,8 @@
 
             cartTable.innerHTML += `
                 <tr>
+
+
                     <td>${item.name}</td>
 
                    
@@ -318,8 +333,9 @@
         document.getElementById('cartItems').value = JSON.stringify(cart.map(item => item.id));
     });
     document.getElementById('updateCartForm').addEventListener('submit', function () {
-        // Store cart item IDs in the hidden input field
+        
         document.getElementById('updatedcartItems').value = JSON.stringify(cart.map(item => item.id));
+        
     });
   
 /////////////////////////////////fetching seat numbers
@@ -367,12 +383,20 @@ console.log(fetchedSeatNumber);
         // Render the cart items in the shopping cart
         renderCart();
          const fetchSeat = document.getElementById('fetchSeat');
+         const confirmSeatNumber=document.getElementById('confirmSeatNumber');
+         confirmSeatNumber.value=seatNumber;
+
         fetchSeat.value = seatNumber;
         // Close the modal after loading the cart items
         const seatNumbersModal = new bootstrap.Modal(document.getElementById('seatNumbersModal'));
         seatNumbersModal.hide();
     })
     .catch(error => console.error('Error fetching cart items:', error));
+    const modalElement = document.getElementById('seatNumbersModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) {
+        modalInstance.hide();
+    }
 }
 
 // When the "Confirm Order" form is submitted, prepare cart items for form submission
@@ -385,8 +409,7 @@ document.getElementById('confirmOrderForm').addEventListener('submit', function 
        
     })));
     
-    // Set the current seat number
-    document.getElementById('confirmSeatNumber').value = document.getElementById('seatNumber').value;
+
 });
 
 
@@ -395,3 +418,35 @@ document.getElementById('confirmOrderForm').addEventListener('submit', function 
 </script>
 
 
+<script>
+    // Check if there is a session message
+    @if (session('success'))
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    @elseif (session('error'))
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    @elseif (session('info'))
+        Swal.fire({
+            title: 'Info',
+            text: "{{ session('info') }}",
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    @elseif (session('warning'))
+        Swal.fire({
+            title: 'Warning',
+            text: "{{ session('warning') }}",
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+    @endif
+</script>

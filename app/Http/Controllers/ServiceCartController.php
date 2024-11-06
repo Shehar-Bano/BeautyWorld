@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItems;
+use App\Models\Orders;
+use App\Models\OrderService;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,9 +19,10 @@ class ServiceCartController extends Controller
     public function index()
     {
 
-        $user=Auth::user();
+        $providers=User::where('designation','worker')->get();
+       
         $services=Service::get();
-        return view('cart.cartSystem',compact('user','services'));
+        return view('cart.cartSystem',compact('providers','services'));
   }
     public function addToCart(Request $request)
     {
@@ -38,6 +42,10 @@ class ServiceCartController extends Controller
                 return [
                     'cart_id' => $cart->id,
                     'service_id' => $serviceId,
+                    'created_at'=>now(),
+                    'updated_at'=>now()
+
+
                     ];
             },$services);
             CartItems::insert( $cartItems);
@@ -59,7 +67,7 @@ public function getCartItemsForSeat($seatNumber)
     $cartItems=CartItems::with('service')->where('cart_id',$cart->id)->get();
     $response = $cartItems->map(function($cartItem) {
         return [
-            'id' => $cartItem->id,
+            'id' => $cartItem->service_id,
             'name' => $cartItem->service->name ?? 'Unnamed Service',
             'price' => $cartItem->service->price ?? 0,
             'tax' => isset($cartItem->service->price) ? round($cartItem->service->price * 0.05) : 0,
@@ -71,6 +79,7 @@ public function getCartItemsForSeat($seatNumber)
 
 public function update(Request $request)
 {
+   
     $validated = $request->validate([
         'seatNumber' => 'required|string',
         'cartItems' => 'required|json'
@@ -92,16 +101,89 @@ public function update(Request $request)
             return [
                 'cart_id' => $cart->id,
                 'service_id' => $serviceId,
+                'created_at'=>now(),
+                'updated_at'=>now()
                 ];
+
         },$services);
+        // dd($cartItems);
         CartItems::insert( $cartItems);
     });
+
 
     return redirect()->back()->with('success', 'Cart updated successfully!');
 }
 
-public function confirmOrder(Request $request){
-    dd($request);
+
+public function confirmOrder(Request $request)
+{
+   
+    $validated = $request->validate([
+        'provider_id'=>'required',
+        'seatNumber' => 'nullable|string',
+        'customerName' => 'required|string|max:50',
+        'customerEmail' => 'required|email',
+        'customerPhone' => 'required|regex:/^[0-9]{10,15}$/',
+        'cartItems' => 'required|json',
+    ]);
+
+    // Parse validated data
+    $seatNumber = $validated['seatNumber'];
+    $customerName = $validated['customerName'];
+    $customerEmail = $validated['customerEmail'];
+    $customerPhone = $validated['customerPhone'];
+    $employee_id=$validated['provider_id'];
+    $services = json_decode($validated['cartItems'], true);
+
+    // Calculate total payment using collection methods
+    $totalPayment = collect($services)->sum('price');
+
+    // Use a transaction to ensure data consistency
+    DB::beginTransaction();
+    try {
+        // Create Order
+        $order = Orders::create([
+            'customer_name' => $customerName,
+            'customer_phone' => $customerPhone,
+            'customer_email' => $customerEmail,
+            'total_payment' => $totalPayment,
+            'date' => now(),
+            'status' => 'unpaid',
+        ]);
+
+        // Prepare OrderService data using collection methods
+        $orderServices = collect($services)->map(function ($service) use ($order, $employee_id) {
+            return [
+                'order_id' => $order->id,
+                'service_id' => $service['id'],
+                'employee_id' => $employee_id, // Assuming employee_id is predetermined or fetched separately
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        })->toArray();
+
+        // Insert all OrderService records at once
+        OrderService::insert($orderServices);
+
+        // Commit the transaction
+        DB::commit();
+        if (!empty($seatNumber)) {
+            $cart = Cart::where('seat_number', $seatNumber)->first();
+            $cart->delete();
+            
+
+        
+        CartItems::where('cart_id', $cart->id)->delete();
+        }
+
+        return redirect()->back()->with('success','Order confirmed successfully!');
+        
+    } catch (\Exception $e) {
+        // Rollback transaction on error
+        DB::rollback();
+        return redirect()->back()->with( 'error','Failed to confirm order. Please try again.');
+    }
 }
+
 
 }
