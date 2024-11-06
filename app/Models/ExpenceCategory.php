@@ -9,4 +9,8 @@ class ExpenceCategory extends Model
     protected $fillable=[
         'name',
     ];
+    public function expences()
+    {
+        return $this->hasMany(Expence::class);
+    }
 }
