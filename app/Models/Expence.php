@@ -12,5 +12,9 @@ class Expence extends Model
             'price' , // Validate price as numeric and not negative
             'category_id'
     ];
-    
+    public function expenceCategory()
+    {
+        return $this->belongsTo(ExpenceCategory::class, 'category_id');
+    }
+
 }

@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header">Add Expence</div>
             <div class="card-body">
-                <form action="{{route('expences.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('expences.update',['id'=>$expence->id])}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="id" id="serviceId">
@@ -19,27 +19,27 @@
                                 <select name="category_id" id="serviceStatus" class="form-control">
                                     <option value="" disabled selected>Select category</option>
                                 @foreach ($expence_categories as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$category->id}}" {{$expence->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
                                 @endforeach
                             </select>
 
                         </div>
                         <div class="form-group mt-2">
                             <label for="description">Name</label>
-                            <input name="name" id="serviceDescription" class="form-control" required></input>
+                            <input name="name" id="serviceDescription" class="form-control" value="{{$expence->name}}" required></input>
                         </div>
                         <div class="form-group mt-2">
                             <label for="description">Description</label>
-                            <textarea name="description" id="serviceDescription" class="form-control" required></textarea>
+                            <textarea name="description" id="serviceDescription" class="form-control"  required>{{$expence->description}}</textarea>
                         </div>
                         <div class="form-group mt-2">
                             <label for="price">Price</label>
-                            <input type="text" name="price" id="servicePrice" class="form-control" required>
+                            <input type="text" name="price" id="servicePrice" class="form-control" value="{{$expence->price}}" required>
                         </div>
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary mt-3">Add Expence</button>
+                    <button type="submit" class="btn btn-primary mt-3">Edit Expence</button>
                 </form>
             </div>
         </div>

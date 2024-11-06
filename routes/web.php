@@ -1,19 +1,19 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\DealController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ExpenceCategoryController;
-use App\Http\Controllers\ExpenceController;
-use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ExpenceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ServiceCartController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ExpenceCategoryController;
 use App\Http\Controllers\ServiceCategoryController;
 
 Route::get('/', function () {
@@ -104,6 +104,8 @@ Route::prefix('expence')->name('expences.')->group(function () {
     Route::post('/update/{id}', [ExpenceController::class, 'update'])->name('update');
     Route::delete('/delete/{id}',[ExpenceController::class, 'destroy'])->name('delete');
 });
+Route::get('/expence-report', [ReportController::class, 'expence'])->name('expence.report');
+Route::get('/sales-report', [ReportController::class, 'sale'])->name('sales.report');
 
 ///////////////////services/////////////////
 //------------------category--------------//
