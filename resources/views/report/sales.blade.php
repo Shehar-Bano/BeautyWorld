@@ -93,16 +93,16 @@
                     $total = 0;
                 @endphp
                 <tbody>
-                    @foreach($expences as $expence)
+                    @foreach($orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{$expence->expenceCategory->name}}</td>
-                            <td>{{$expence->description}}</td>
-                            <td>{{ $expence->created_at->format('Y-m-d') }}</td>
-                            <td>Rs {{ number_format($expence->price, 0) }} \-</td>
+                            <td>{{$order->expenceCategory->name}}</td>
+                            <td>{{$order->description}}</td>
+                            <td>{{ $order->created_at->format('Y-m-d') }}</td>
+                            <td>Rs {{ number_format($order->price, 0) }} \-</td>
                         </tr>
                         @php
-                        $total += $expence->price
+                        $total += $order->price
                     @endphp
                     @endforeach
                     <tr>
