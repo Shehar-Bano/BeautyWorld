@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItems;
+use App\Models\Deal;
 use App\Models\Orders;
 use App\Models\OrderService;
 use App\Models\Service;
@@ -22,60 +23,112 @@ class ServiceCartController extends Controller
         $providers=User::where('designation','worker')->get();
        
         $services=Service::get();
-        return view('cart.cartSystem',compact('providers','services'));
+        $deals=Deal::with('services')->get();
+        return view('cart.cartSystem',compact('deals','providers','services'));
   }
-    public function addToCart(Request $request)
-    {
-
-        $validated = $request->validate([
-            'seatNumber' => 'required|string',
-            'cartItems' => 'required|json'
+  public function addToCart(Request $request)
+  {
+      
+      $validated = $request->validate([
+          'seatNumber' => 'required|string',
+          'cartItems' => 'required|json'
+      ]);
+      
+// dd($validated );
+      $seatNumber = $validated['seatNumber'];
+      $cartItems = json_decode($validated['cartItems'], true);
+    //   dd($cartItems);
+     
+      DB::transaction(function() use ($seatNumber, $cartItems) {
+        $cart = Cart::create([
+            'seat_number' => $seatNumber,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
-
-        $seatNumber = $validated['seatNumber'];
-        $services = json_decode($validated['cartItems'], true);
-        DB::transaction(function() use($seatNumber, $services){
-           $cart= Cart::create([
-                'seat_number' => $seatNumber,
-            ]);
-            $cartItems=array_map(function($serviceId) use($cart){
-                return [
-                    'cart_id' => $cart->id,
-                    'service_id' => $serviceId,
-                    'created_at'=>now(),
-                    'updated_at'=>now()
-
-
-                    ];
-            },$services);
-            CartItems::insert( $cartItems);
-        });
-
-
-        return redirect()->back()->with('items set on hold successfully');
-
-    }
+    
+        $cartItemsData = array_map(function($item) use ($cart) {
+            $data = [
+                'cart_id' => $cart->id,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+    
+            if ($item['type'] === 'service') {
+                $data['service_id'] = $item['id'];
+                $data['deal_id'] = null; // Explicitly set deal_id to null
+            } elseif ($item['type'] === 'deal') {
+                $data['deal_id'] = $item['id'];
+                $data['service_id'] = null; // Explicitly set service_id to null
+            }
+    
+            return $data;
+        }, $cartItems);
+    
+        // Check the data being inserted
+        // dd($cartItemsData);
+    
+        try {
+            CartItems::insert($cartItemsData);
+        } catch (\Exception $e) {
+            dd($e->getMessage()); // Catch any errors during insertion
+        }
+    });
+      
+      return redirect()->back()->with('success', 'Items set on hold successfully');
+  }
+  
 
 
     public function getSeatNumbers(){
         $seatNumbers = Cart::pluck('seat_number');
         return response()->json(['seatNumbers' => $seatNumbers]);
     }
-public function getCartItemsForSeat($seatNumber)
-{
-    $cart = Cart::where('seat_number', $seatNumber)->first();
-    $cartItems=CartItems::with('service')->where('cart_id',$cart->id)->get();
-    $response = $cartItems->map(function($cartItem) {
-        return [
-            'id' => $cartItem->service_id,
-            'name' => $cartItem->service->name ?? 'Unnamed Service',
-            'price' => $cartItem->service->price ?? 0,
-            'tax' => isset($cartItem->service->price) ? round($cartItem->service->price * 0.05) : 0,
-        ];
-    });
+    public function getCartItemsForSeat($seatNumber)
+    {
+        // Fetch the cart for the given seat number
+        $cart = Cart::where('seat_number', $seatNumber)->first();
+    
+        // If the cart doesn't exist, return an empty response or handle accordingly
+        if (!$cart) {
+            return response()->json(['message' => 'Cart not found'], 404);
+        }
+    
+        // Fetch cart items with their related services and deals
+        $cartItems = CartItems::with(['service', 'deal']) // Assuming you have a 'deal' relationship in CartItems
+            ->where('cart_id', $cart->id)
+            ->get();
+    
+        // Map the cart items to include service and deal details
+        $response = $cartItems->map(function($cartItem) {
+            $itemDetails = [];
+    
+            // Check if there's a service ID
+            if ($cartItem->service_id) {
+                $itemDetails = [
+                    'id' => $cartItem->service_id,
+                    'name' => $cartItem->service->name ?? 'Unnamed Service',
+                    'price' => $cartItem->service->price ?? 0,
 
-    return response()->json(['cartItems' => $response]);
-}
+                    'type' => 'service',
+                ];
+            }
+    
+            // Check if there's a deal ID
+            if ($cartItem->deal_id) {
+                $itemDetails = [
+                    'id' => $cartItem->deal_id,
+                    'name' => $cartItem->deal->name ?? 'Unnamed Deal',
+                    'price' => $cartItem->deal->dis_price ?? 0, // Assuming 'discounted_price' exists
+
+                    'type' => 'deal',
+                ];
+            }
+
+            return $itemDetails;
+        });
+  
+        return response()->json($response);
+    }
 
 public function update(Request $request)
 {
@@ -84,7 +137,7 @@ public function update(Request $request)
         'seatNumber' => 'required|string',
         'cartItems' => 'required|json'
     ]);
-
+// dd($validated);
     $seatNumber = $validated['seatNumber'];
     $services = json_decode($validated['cartItems'], true);
     
@@ -97,13 +150,23 @@ public function update(Request $request)
         
         CartItems::where('cart_id', $cart->id)->delete();
       
-        $cartItems=array_map(function($serviceId) use($cart){
-            return [
-                'cart_id' => $cart->id,
-                'service_id' => $serviceId,
-                'created_at'=>now(),
-                'updated_at'=>now()
+        $cartItems=array_map(function($item) use($cart){
+           
+                $data = [
+                    'cart_id' => $cart->id,
+                    'created_at' => now(),
+                    'updated_at' => now()
                 ];
+        
+                if ($item['type'] === 'service') {
+                    $data['service_id'] = $item['id'];
+                    $data['deal_id'] = null; // Explicitly set deal_id to null
+                } elseif ($item['type'] === 'deal') {
+                    $data['deal_id'] = $item['id'];
+                    $data['service_id'] = null; // Explicitly set service_id to null
+                }
+        
+                return $data;
 
         },$services);
         // dd($cartItems);
@@ -127,6 +190,7 @@ public function confirmOrder(Request $request)
         'cartItems' => 'required|json',
     ]);
 
+    // dd($validated);
     // Parse validated data
     $seatNumber = $validated['seatNumber'];
     $customerName = $validated['customerName'];
@@ -152,16 +216,26 @@ public function confirmOrder(Request $request)
         ]);
 
         // Prepare OrderService data using collection methods
-        $orderServices = collect($services)->map(function ($service) use ($order, $employee_id) {
-            return [
+        $orderServices = collect($services)->map(function ($item) use ($order, $employee_id) {
+            $data = [
                 'order_id' => $order->id,
-                'service_id' => $service['id'],
-                'employee_id' => $employee_id, // Assuming employee_id is predetermined or fetched separately
+                'employee_id' => $employee_id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-        })->toArray();
 
+            // Check the type and set service_id or deal_id accordingly
+            if ($item['type'] === 'service') {
+                $data['service_id'] = $item['id'];
+                $data['deal_id'] = null; // Explicitly set deal_id to null
+            } elseif ($item['type'] === 'deal') {
+                $data['deal_id'] = $item['id'];
+                $data['service_id'] = null; // Explicitly set service_id to null
+            }
+
+            return $data;
+        })->toArray();
+        // dd($orderServices);
         // Insert all OrderService records at once
         OrderService::insert($orderServices);
 

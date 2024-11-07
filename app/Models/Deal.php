@@ -22,4 +22,5 @@ class Deal extends Model
         return $this->belongsToMany(Service::class, 'deal_services', 'deal_id', 'service_id');
     }
 
+
 }
