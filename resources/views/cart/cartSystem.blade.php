@@ -8,7 +8,7 @@
         <!-- Customer and Product Search Section -->
         <div class="row mb-3">
             <!-- Main Content: Product List and Cart -->
-            <div class="row  mx-auto">
+            <div class="row  mx-auto d-flex justify-content-center">
 
 
                 <!-- Cart Section -->
@@ -92,14 +92,12 @@
                     </div>
                 </div>
                 <!-- Confirm Order Modal -->
-                <div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmOrderModalLabel">Confirm Order</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="confirmOrderForm" action="{{ route('cart.order.confirm') }}" method="POST">
@@ -200,7 +198,7 @@
 
 
                 <!-- Product List Section -->
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-primary text-white text-center">
                             <h5>Product List</h5>
@@ -226,6 +224,9 @@
                             </div>
                         </div>
                     </div>
+               
+                </div>
+                <div class="col-md-6">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-success text-white text-center">
                             <h5>Special Deals</h5>
@@ -265,7 +266,6 @@
                         </div>
                     </div>
                 </div>
-
 
             </div>
         </div>
@@ -527,6 +527,7 @@
             // Store cart item IDs in the hidden input field for confirming order
             document.getElementById('confirmCartItems').value = JSON.stringify(cart.map(item => ({
                 id: item.id,
+                price:item.price,
                
                 type: item.type
 
@@ -536,6 +537,22 @@
 
         });
     </script>
+    <!-- JavaScript to hide the modal -->
+<script>
+    document.getElementById('confirmOrderForm').addEventListener('submit', function(event) {
+        // Prevent the form's default submit behavior for demonstration
+        event.preventDefault();
+
+        // Submit form via AJAX or continue with normal form submission
+        // Hide the modal after form submission
+        var modal = new bootstrap.Modal(document.getElementById('confirmOrderModal'));
+        modal.hide();
+
+        // Optional: Remove the line below if you want to submit the form after the modal hides
+        this.submit(); // Uncomment to allow actual form submission
+    });
+</script>
+
 
 
     <script>

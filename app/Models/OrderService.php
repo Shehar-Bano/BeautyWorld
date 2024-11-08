@@ -18,5 +18,15 @@ class OrderService extends Model
   {
     return $this->belongsTo(Orders::class,'order_id');
   }
+  public function service()
+{
+    return $this->belongsTo(Service::class, 'service_id');
+}
+
+public function deal()
+{
+    return $this->belongsTo(Deal::class, 'deal_id');
+}
+
 
 }

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class ServiceCartController extends Controller
@@ -20,6 +21,7 @@ class ServiceCartController extends Controller
     public function index()
     {
 
+      
         $providers=User::where('designation','worker')->get();
        
         $services=Service::get();
@@ -180,9 +182,8 @@ public function update(Request $request)
 
 public function confirmOrder(Request $request)
 {
-   
     $validated = $request->validate([
-        'provider_id'=>'required',
+        'provider_id' => 'required',
         'seatNumber' => 'nullable|string',
         'customerName' => 'required|string|max:50',
         'customerEmail' => 'required|email',
@@ -190,22 +191,18 @@ public function confirmOrder(Request $request)
         'cartItems' => 'required|json',
     ]);
 
-    // dd($validated);
-    // Parse validated data
     $seatNumber = $validated['seatNumber'];
     $customerName = $validated['customerName'];
     $customerEmail = $validated['customerEmail'];
     $customerPhone = $validated['customerPhone'];
-    $employee_id=$validated['provider_id'];
+    $employee_id = $validated['provider_id'];
     $services = json_decode($validated['cartItems'], true);
 
-    // Calculate total payment using collection methods
     $totalPayment = collect($services)->sum('price');
+    
 
-    // Use a transaction to ensure data consistency
     DB::beginTransaction();
     try {
-        // Create Order
         $order = Orders::create([
             'customer_name' => $customerName,
             'customer_phone' => $customerPhone,
@@ -215,7 +212,6 @@ public function confirmOrder(Request $request)
             'status' => 'unpaid',
         ]);
 
-        // Prepare OrderService data using collection methods
         $orderServices = collect($services)->map(function ($item) use ($order, $employee_id) {
             $data = [
                 'order_id' => $order->id,
@@ -224,38 +220,43 @@ public function confirmOrder(Request $request)
                 'updated_at' => now(),
             ];
 
-            // Check the type and set service_id or deal_id accordingly
             if ($item['type'] === 'service') {
                 $data['service_id'] = $item['id'];
-                $data['deal_id'] = null; // Explicitly set deal_id to null
+                $data['deal_id'] = null;
             } elseif ($item['type'] === 'deal') {
                 $data['deal_id'] = $item['id'];
-                $data['service_id'] = null; // Explicitly set service_id to null
+                $data['service_id'] = null;
             }
 
             return $data;
         })->toArray();
-        // dd($orderServices);
-        // Insert all OrderService records at once
-        OrderService::insert($orderServices);
 
-        // Commit the transaction
+        OrderService::insert($orderServices);
         DB::commit();
+
         if (!empty($seatNumber)) {
             $cart = Cart::where('seat_number', $seatNumber)->first();
-            $cart->delete();
-            
-
-        
-        CartItems::where('cart_id', $cart->id)->delete();
+            if ($cart) {
+                CartItems::where('cart_id', $cart->id)->delete();
+                $cart->delete();
+            }
         }
 
-        return redirect()->back()->with('success','Order confirmed successfully!');
+          // Fetch the order services with relationships to pass to the PDF
+          $orderServices = OrderService::with(['service', 'deal.services'])
+          ->where('order_id', $order->id)
+          ->get();
+
+      // Generate and download the PDF receipt with service and deal details
+
         
+    
+        // Return the PDF download response directly
+        return view('cart.receipt',compact('order','orderServices'));
+
     } catch (\Exception $e) {
-        // Rollback transaction on error
         DB::rollback();
-        return redirect()->back()->with( 'error','Failed to confirm order. Please try again.');
+        return redirect()->back()->with('error', 'Failed to confirm order. Please try again.');
     }
 }
 
