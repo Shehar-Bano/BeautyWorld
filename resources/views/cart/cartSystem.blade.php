@@ -197,75 +197,90 @@
 
 
 
-                <!-- Product List Section -->
-                <div class="col-md-6">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white text-center">
-                            <h5>Product List</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!-- Sample Products - Replace with dynamic loop for real data -->
-                                @foreach ($services as $service)
-                                    <div class="col-6 col-md-6 text-center mb-4">
-                                        <div class="product-item p-3 shadow-sm rounded">
-                                            <p><strong>{{ $service->name }}</strong></p>
-                                            <p class="text-muted">Price: {{ number_format($service->price) }} PKR</p>
-                                            <p class="text-muted">Category: {{ $service->category->name }}</p>
-                                            <p class="text-muted">Duration: {{ $service->duration }}</p>
-                                            <!-- Button for Service -->
-                                            <button class="btn btn-sm btn-outline-primary"
-                                                onclick="addToCart({{ $service->id }}, '{{ $service->name }}', {{ $service->price }}, 'service')">Add
-                                                to Cart</button>
+               <!-- Product List Section -->
+<div class="col-md-6">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h5>Product List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Price (PKR)</th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Duration</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through services dynamically -->
+                    @foreach ($services as $service)
+                        <tr>
+                            <td class="text-center">{{ $service->name }}</td>
+                            <td class="text-center">{{ number_format($service->price) }}</td>
+                            <td class="text-center">{{ $service->category->name }}</td>
+                            <td class="text-center">{{ $service->duration }}</td>
+                            <td class="text-center">
+                                <!-- Button for Service -->
+                                <button class="btn btn-sm btn-outline-primary"
+                                    onclick="addToCart({{ $service->id }}, '{{ $service->name }}', {{ $service->price }}, 'service')">Add
+                                    to Cart</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+               <!-- Special Deals Section -->
+<div class="col-md-6">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-success text-white text-center">
+            <h5>Special Deals</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Deal Name</th>
+                        <th class="text-center">Discounted Price (PKR)</th>
+                        <th class="text-center">Services</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through deals dynamically -->
+                    @foreach ($deals as $deal)
+                        <tr>
+                            <td class="text-center">{{ $deal->name }}</td>
+                            <td class="text-center">{{ number_format($deal->dis_price) }}</td>
+                            <td class="text-center">
+                                <ul class="list-group">
+                                    @foreach ($deal->dealService as $dealService)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>{{ $dealService->service->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td class="text-center">
+                                <!-- Button for Deal -->
+                                <button class="btn btn-sm btn-outline-success"
+                                    onclick="addToCart({{ $deal->id }}, '{{ $deal->name }}', {{ $deal->dis_price }}, 'deal')">Add to Cart</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
                
-                </div>
-                <div class="col-md-6">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-success text-white text-center">
-                            <h5>Special Deals</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!-- Sample Deals - Replace with dynamic loop for real deals -->
-                                @foreach ($deals as $deal)
-                                    <div class="col-6 col-md-6 text-center mb-4">
-                                        <div class="deal-item p-3 shadow-sm rounded">
-                                            <p><strong>{{ $deal->name }}</strong></p>
-                                            <p class="text-muted">Discounted Price:
-                                                {{ number_format($deal->dis_price) }} PKR</p>
+            </table>
+        </div>
+    </div>
+</div>
 
-                                            <p class="text-muted">Services:
-                                            <p class="text-muted">Services:
-                                            <ul class="list-group">
-                                                @foreach ($deal->dealService as $dealService)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center">
-                                                        <i
-                                                            class="bi bi-check-circle-fill text-success me-2"></i>{{ $dealService->service->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                            </p>
-                                            </p>
-
-                                            <!-- Button for Deal -->
-                                            <button class="btn btn-sm btn-outline-success"
-                                                onclick="addToCart({{ $deal->id }}, '{{ $deal->name }}', {{ $deal->dis_price }}, 'deal')">Add
-                                                to Cart</button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>

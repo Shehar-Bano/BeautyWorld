@@ -27,12 +27,12 @@
             <p><strong>Email:</strong> {{ $order->customer_email }}</p>
             <p><strong>Phone:</strong> {{ $order->customer_phone }}</p>
             <p><strong>Date:</strong> {{ $order->date }}</p>
-            <p><strong>Total Payment:</strong> {{ number_format($order->total_payment) }} Rs/-</p>
+            
         </div>
         <table>
             <thead>
                 <tr>
-                    <th>Type</th>
+                   
                     <th>Item</th>
                     <th>Price</th>
                 </tr>
@@ -41,14 +41,14 @@
                 @foreach ($orderServices as $orderService)
                     @if ($orderService->service)
                         <tr class="item-header">
-                            <td>Service</td>
+                           
                             <td>{{ $orderService->service->name }}</td>
                             <td>{{ number_format($orderService->service->price) }} Rs/-</td>
                         </tr>
                     @endif
                     @if ($orderService->deal)
                         <tr class="item-header">
-                            <td>Deal</td>
+                           
                             <td>
                                 {{ $orderService->deal->name }}
                                 <ul>
@@ -64,8 +64,10 @@
                     @endif
                 @endforeach
             </tbody>
+            
         </table>
         <div class="footer">
+            <p><strong>Total Payment:</strong> {{ number_format($order->total_payment) }} Rs/-</p>
             <p>Thank you for your order!</p>
         </div>
     </div>
@@ -85,7 +87,7 @@
 
             // Restore the original page content after printing
             document.body.innerHTML = originalContents;
-            window.location.replace('{{ route('cart.index'}}');
+            window.location.replace('{{ route('cart.index', ['success' => 'Receipt printed successfully']) }}');
         }
     </script>
 </body>
