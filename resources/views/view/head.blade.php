@@ -25,6 +25,8 @@
     <link href="{{asset('css/style.min.css')}}" rel="stylesheet">
      <!-- SweetAlert CSS and JS -->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 .collapse.in{

@@ -15,9 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references("id")->on('orders')->cascadeOnDelete();
-            $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references("id")->on('services')->cascadeOnDelete();
-            $table->unsignedBigInteger('employee_id');
+             // Service ID column, set as nullable
+             $table->unsignedBigInteger('service_id')->nullable();
+             $table->foreign('service_id')->references('id')->on('services')->cascadeOnDelete()->cascadeOnUpdate();
+             
+             // Deal ID column, set as nullable
+             $table->unsignedBigInteger('deal_id')->nullable();
+             $table->foreign('deal_id')->references('id')->on('deals')->cascadeOnDelete()->cascadeOnUpdate();
+             
+             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references("id")->on('users')->cascadeOnDelete();
 
             $table->timestamps();
