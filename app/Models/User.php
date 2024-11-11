@@ -51,4 +51,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function orderService(){
+        return $this->hasMany(OrderService::class);
+    }
 }

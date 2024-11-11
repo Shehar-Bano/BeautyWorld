@@ -20,7 +20,7 @@ class ServiceCartController extends Controller
     {
 
         $providers=User::where('designation','worker')->get();
-       
+
         $services=Service::get();
         return view('cart.cartSystem',compact('providers','services'));
   }
@@ -79,7 +79,7 @@ public function getCartItemsForSeat($seatNumber)
 
 public function update(Request $request)
 {
-   
+
     $validated = $request->validate([
         'seatNumber' => 'required|string',
         'cartItems' => 'required|json'
@@ -87,16 +87,16 @@ public function update(Request $request)
 
     $seatNumber = $validated['seatNumber'];
     $services = json_decode($validated['cartItems'], true);
-    
+
     DB::transaction(function() use($seatNumber, $services) {
         $cart = Cart::where('seat_number', $seatNumber)->first();
 
         if (!$cart) {
             return response()->json(['success' => false, 'message' => 'Cart not found for the given seat number.'], 404);
         }
-        
+
         CartItems::where('cart_id', $cart->id)->delete();
-      
+
         $cartItems=array_map(function($serviceId) use($cart){
             return [
                 'cart_id' => $cart->id,
@@ -117,7 +117,7 @@ public function update(Request $request)
 
 public function confirmOrder(Request $request)
 {
-   
+
     $validated = $request->validate([
         'provider_id'=>'required',
         'seatNumber' => 'nullable|string',
@@ -170,14 +170,14 @@ public function confirmOrder(Request $request)
         if (!empty($seatNumber)) {
             $cart = Cart::where('seat_number', $seatNumber)->first();
             $cart->delete();
-            
 
-        
+
+
         CartItems::where('cart_id', $cart->id)->delete();
         }
 
         return redirect()->back()->with('success','Order confirmed successfully!');
-        
+
     } catch (\Exception $e) {
         // Rollback transaction on error
         DB::rollback();
