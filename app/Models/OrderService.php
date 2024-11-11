@@ -26,14 +26,8 @@ class OrderService extends Model
   {
     return $this->belongsTo(User::class, 'employee_id');
   }
-{
-    return $this->belongsTo(Service::class, 'service_id');
-}
-
-public function deal()
-{
+ public function deal()
+  {
     return $this->belongsTo(Deal::class, 'deal_id');
-}
-
-
+  }
 }
