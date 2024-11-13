@@ -107,6 +107,7 @@ Route::prefix('expence')->name('expences.')->group(function () {
 Route::get('/expence-report', [ReportController::class, 'expence'])->name('expence.report');
 Route::get('/sales-report', [ReportController::class, 'sale'])->name('sales.report');
 Route::get('/sales-report/{id}', [ReportController::class, 'detail'])->name('detail.sales');
+Route::get('/balanceSheet', [ReportController::class, 'balanceSheet'])->name('balanceSheet');
 
 ///////////////////services/////////////////
 //------------------category--------------//

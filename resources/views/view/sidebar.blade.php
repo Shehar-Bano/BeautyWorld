@@ -111,43 +111,9 @@
                         href="{{route('sales.report')}}" aria-expanded="false"><i class="mdi me-2 mdi-table"></i><span
                             class="hide-menu">Sales Report</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="icon-material.html" aria-expanded="false"><i class="mdi me-2 mdi-emoticon"></i><span
-                            class="hide-menu">Icon</span></a></li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-                        aria-expanded="false">
-                        <i class="mdi me-2 mdi-earth"></i>
-                        <span class="hide-menu">Maps</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse first-level">
-                        <li class="sidebar-item">
-                            <a href="map-google.html" class="sidebar-link">
-                                <i class="mdi mdi-google-maps"></i>
-                                <span class="hide-menu">Google Map</span>
-                            </a>
-                        </li>
-                        <!-- You can add more items to the dropdown if needed -->
-                    </ul>
-                </li>
-
-                <ul aria-expanded="false" class="collapse first-level">
-                    <li class="sidebar-item">
-                        <a href="map-google.html" class="sidebar-link">
-                            <i class="mdi mdi-google-maps"></i>
-                            <span class="hide-menu">Google Map</span>
-                        </a>
-                    </li>
-                    <!-- You can add more items to the dropdown if needed -->
-                </ul>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="pages-blank.html" aria-expanded="false"><i
-                            class="mdi me-2 mdi-book-open-variant"></i><span class="hide-menu">Blank</span></a>
-                </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="pages-error-404.html" aria-expanded="false"><i
-                            class="mdi me-2 mdi-help-circle"></i><span class="hide-menu">Error 404</span></a>
-                </li>
+                        href="{{route('balanceSheet')}}" aria-expanded="false"><i class="mdi me-2 mdi-emoticon"></i><span
+                            class="hide-menu">BalanceSheet</span></a></li>
+               
 
             </ul>
 
