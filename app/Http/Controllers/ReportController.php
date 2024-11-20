@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Orders;
 use App\Models\Expence;
 use App\Models\OrderService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class ReportController extends Controller
 {

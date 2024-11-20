@@ -85,7 +85,15 @@ use Illuminate\Support\Str;
                 <h4>Deal's</h4>
                 <a href="{{ route('deals.create') }}" class="btn btn-add">Add deal</a>
             </div>
-
+            <form action="">
+                @csrf
+                <label>Select File</label>
+                <input type="file" name="file" class="form-control"/>
+                <div class="mt-5">
+                    <button type="submit" class="btn btn-info"></button>
+                    <a href="#" class="btn btn-primary float-right">Export Excel</a>
+                </div>
+            </form>
             <!-- Table -->
             <table class="table">
                 <thead>
