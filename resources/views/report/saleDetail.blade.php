@@ -6,6 +6,7 @@
         font-family: 'Arial', sans-serif;
         background-color: #f4f6f9;
     }
+
     .table-wrapper {
         margin: 20px auto;
         max-width: 900px;
@@ -14,10 +15,12 @@
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
+
     h4 {
         font-weight: 600;
         color: #333;
     }
+
     .btn-add {
         background-color: #00c9b7;
         color: white;
@@ -26,42 +29,53 @@
         border-radius: 4px;
         font-size: 14px;
     }
+
     .btn-add:hover {
         background-color: #00b3a5;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
     }
+
     thead th {
         font-weight: 600;
         color: #6c757d;
         background-color: #f8f9fa;
         padding: 10px;
     }
+
     tbody td {
         padding: 10px;
         vertical-align: middle;
         border-top: 1px solid #dee2e6;
         color: #495057;
     }
+
     tbody tr:hover {
         background-color: #f1f1f1;
     }
+
     tbody tr:nth-child(even) {
         background-color: #f9f9f9;
     }
-    .action-icons a, .action-icons button {
+
+    .action-icons a,
+    .action-icons button {
         font-size: 16px;
         margin-right: 10px;
         cursor: pointer;
     }
+
     .edit-icon {
         color: #00a9ff;
     }
+
     .delete-icon {
         color: #ff5a5f;
     }
+
     .delete-icon button {
         background: none;
         border: none;
@@ -76,52 +90,37 @@
         {{-- /////////////after this add form////////// --}}
         <div class="table-wrapper">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Sales's Report</h4>
+                <h4>Sales's Detail Report</h4>
             </div>
             <!-- Table -->
             <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th> Name</th>
-                        <th> Email</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Detail</th>
-                        <th>Total Payment</th>
-
+                        <th>Service Name</th>
+                        <th>Service Price</th>
+                        <th>Duration</th>
+                        <th>Service Provider</th>
                     </tr>
                 </thead>
                 @php
-                    $total = 0;
+                    $count = 1;
                 @endphp
                 <tbody>
-                    @foreach($orders as $order)
+                    @foreach ($orders as $service)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{$order->customer_name}}</td>
-                            <td>{{$order->customer_email}}</td>
-                            <td>{{$order->date}}</td>
-                            <td>{{$order->status}}</td>
-                            <td><a href="{{ route('detail.sales', ['id' => $order->id]) }}" style="color: rgb(52, 51, 51)">detail</a></td>
-                            <td>Rs {{ $order->total_payment}} \-</td>
+                            <td>{{ $count++ }}</td>
+                            <td> {{ $service->service->name }}</td>
+                            <td>{{ $service->service->price }}</td>
+                            <td>{{ $service->service->duration }}</td>
+                            <td>{{ $service->user->name }}</td>
                         </tr>
-                        @php
-                        $total += $order->total_payment
-                    @endphp
                     @endforeach
-                    <tr>
-                        <td colspan="5"></td>
-                        <td><b>Total Expence:</b></td>
-                        <td >
-                            Rs {{number_format($total,0)}} \-
-                        </td>
-
-                    </tr>
                 </tbody>
             </table>
+            <a href="{{ route('sales.report') }}" class="btn btn-primary">Back</a>
         </div>
-{{-- ///////////////////till here////////// --}}
+        {{-- ///////////////////till here////////// --}}
     </div>
 </div>
 <script>

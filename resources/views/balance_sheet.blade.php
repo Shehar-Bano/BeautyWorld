@@ -2,10 +2,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f6f9;
-    }
+
     .table-wrapper {
         margin: 20px auto;
         max-width: 900px;
@@ -74,53 +71,40 @@
 <div class="page-wrapper">
     <div class="container-fluid">
         {{-- /////////////after this add form////////// --}}
-        <div class="table-wrapper">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4>Sales's Report</h4>
-            </div>
-            <!-- Table -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th> Name</th>
-                        <th> Email</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Detail</th>
-                        <th>Total Payment</th>
-
-                    </tr>
-                </thead>
-                @php
-                    $total = 0;
-                @endphp
-                <tbody>
-                    @foreach($orders as $order)
+        <div class="container-fluid">
+                <h1>Balance Sheet</h1>
+                <table >
+                    <thead>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{$order->customer_name}}</td>
-                            <td>{{$order->customer_email}}</td>
-                            <td>{{$order->date}}</td>
-                            <td>{{$order->status}}</td>
-                            <td><a href="{{ route('detail.sales', ['id' => $order->id]) }}" style="color: rgb(52, 51, 51)">detail</a></td>
-                            <td>Rs {{ $order->total_payment}} \-</td>
+                            <th>No.</th>
+                            <th>Date</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Balance</th>
                         </tr>
-                        @php
-                        $total += $order->total_payment
-                    @endphp
-                    @endforeach
-                    <tr>
-                        <td colspan="5"></td>
-                        <td><b>Total Expence:</b></td>
-                        <td >
-                            Rs {{number_format($total,0)}} \-
-                        </td>
+                    </thead>
+                    <tbody>
+                        @foreach($entries as $index => $entry)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($entry['date'])->format('Y-m-d') }}</td>
+                            <td>{{ $entry['debit'] ? number_format($entry['debit'], 2) . ' Rs/-' : '-' }}</td>
+                            <td>{{ $entry['credit'] ? number_format($entry['credit'], 2) . ' Rs/-' : '-' }}</td>
+                            <td>{{ number_format($entry['balance'], 2) . ' Rs/-' }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Totals</th>
+                            <th>{{ number_format($totalDebit, 2) }} Rs/-</th>
+                            <th>{{ number_format($totalCredit, 2) }} Rs/-</th>
+                            <th>{{ number_format($finalBalance, 2) }} Rs/-</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 {{-- ///////////////////till here////////// --}}
     </div>
 </div>

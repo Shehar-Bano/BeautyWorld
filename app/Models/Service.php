@@ -40,4 +40,10 @@ class Service extends Model
         return $this->hasMany(DealService::class, 'deal_service_id');
 
     }
+    
+    public function orderService()
+    {
+        return $this->hasMany(OrderService::class, 'order_service_id');
+
+    }
 }

@@ -21,40 +21,40 @@ class ServiceCartController extends Controller
     public function index()
     {
 
-      
+
         $providers=User::where('designation','worker')->get();
-       
+
         $services=Service::get();
         $deals=Deal::with('services')->get();
         return view('cart.cartSystem',compact('deals','providers','services'));
   }
   public function addToCart(Request $request)
   {
-      
+
       $validated = $request->validate([
           'seatNumber' => 'required|string',
           'cartItems' => 'required|json'
       ]);
-      
+
 // dd($validated );
       $seatNumber = $validated['seatNumber'];
       $cartItems = json_decode($validated['cartItems'], true);
     //   dd($cartItems);
-     
+
       DB::transaction(function() use ($seatNumber, $cartItems) {
         $cart = Cart::create([
             'seat_number' => $seatNumber,
             'created_at' => now(),
             'updated_at' => now()
         ]);
-    
+
         $cartItemsData = array_map(function($item) use ($cart) {
             $data = [
                 'cart_id' => $cart->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ];
-    
+
             if ($item['type'] === 'service') {
                 $data['service_id'] = $item['id'];
                 $data['deal_id'] = null; // Explicitly set deal_id to null
@@ -62,23 +62,23 @@ class ServiceCartController extends Controller
                 $data['deal_id'] = $item['id'];
                 $data['service_id'] = null; // Explicitly set service_id to null
             }
-    
+
             return $data;
         }, $cartItems);
-    
+
         // Check the data being inserted
         // dd($cartItemsData);
-    
+
         try {
             CartItems::insert($cartItemsData);
         } catch (\Exception $e) {
             dd($e->getMessage()); // Catch any errors during insertion
         }
     });
-      
+
       return redirect()->back()->with('success', 'Items set on hold successfully');
   }
-  
+
 
 
     public function getSeatNumbers(){
@@ -89,21 +89,21 @@ class ServiceCartController extends Controller
     {
         // Fetch the cart for the given seat number
         $cart = Cart::where('seat_number', $seatNumber)->first();
-    
+
         // If the cart doesn't exist, return an empty response or handle accordingly
         if (!$cart) {
             return response()->json(['message' => 'Cart not found'], 404);
         }
-    
+
         // Fetch cart items with their related services and deals
         $cartItems = CartItems::with(['service', 'deal']) // Assuming you have a 'deal' relationship in CartItems
             ->where('cart_id', $cart->id)
             ->get();
-    
+
         // Map the cart items to include service and deal details
         $response = $cartItems->map(function($cartItem) {
             $itemDetails = [];
-    
+
             // Check if there's a service ID
             if ($cartItem->service_id) {
                 $itemDetails = [
@@ -114,7 +114,7 @@ class ServiceCartController extends Controller
                     'type' => 'service',
                 ];
             }
-    
+
             // Check if there's a deal ID
             if ($cartItem->deal_id) {
                 $itemDetails = [
@@ -128,13 +128,13 @@ class ServiceCartController extends Controller
 
             return $itemDetails;
         });
-  
+
         return response()->json($response);
     }
 
 public function update(Request $request)
 {
-   
+
     $validated = $request->validate([
         'seatNumber' => 'required|string',
         'cartItems' => 'required|json'
@@ -142,33 +142,23 @@ public function update(Request $request)
 // dd($validated);
     $seatNumber = $validated['seatNumber'];
     $services = json_decode($validated['cartItems'], true);
-    
+
     DB::transaction(function() use($seatNumber, $services) {
         $cart = Cart::where('seat_number', $seatNumber)->first();
 
         if (!$cart) {
             return response()->json(['success' => false, 'message' => 'Cart not found for the given seat number.'], 404);
         }
-        
+
         CartItems::where('cart_id', $cart->id)->delete();
-      
-        $cartItems=array_map(function($item) use($cart){
-           
-                $data = [
-                    'cart_id' => $cart->id,
-                    'created_at' => now(),
-                    'updated_at' => now()
+
+        $cartItems=array_map(function($serviceId) use($cart){
+            return [
+                'cart_id' => $cart->id,
+                'service_id' => $serviceId,
+                'created_at'=>now(),
+                'updated_at'=>now()
                 ];
-        
-                if ($item['type'] === 'service') {
-                    $data['service_id'] = $item['id'];
-                    $data['deal_id'] = null; // Explicitly set deal_id to null
-                } elseif ($item['type'] === 'deal') {
-                    $data['deal_id'] = $item['id'];
-                    $data['service_id'] = null; // Explicitly set service_id to null
-                }
-        
-                return $data;
 
         },$services);
         // dd($cartItems);
@@ -182,6 +172,7 @@ public function update(Request $request)
 
 public function confirmOrder(Request $request)
 {
+
     $validated = $request->validate([
         'provider_id' => 'required',
         'seatNumber' => 'nullable|string',
@@ -199,7 +190,7 @@ public function confirmOrder(Request $request)
     $services = json_decode($validated['cartItems'], true);
 
     $totalPayment = collect($services)->sum('price');
-    
+
 
     DB::beginTransaction();
     try {
@@ -236,23 +227,14 @@ public function confirmOrder(Request $request)
 
         if (!empty($seatNumber)) {
             $cart = Cart::where('seat_number', $seatNumber)->first();
-            if ($cart) {
-                CartItems::where('cart_id', $cart->id)->delete();
-                $cart->delete();
-            }
+            $cart->delete();
+
+
+
+        CartItems::where('cart_id', $cart->id)->delete();
         }
 
-          // Fetch the order services with relationships to pass to the PDF
-          $orderServices = OrderService::with(['service', 'deal.services'])
-          ->where('order_id', $order->id)
-          ->get();
-
-      // Generate and download the PDF receipt with service and deal details
-
-        
-    
-        // Return the PDF download response directly
-        return view('cart.receipt',compact('order','orderServices'));
+        return redirect()->back()->with('success','Order confirmed successfully!');
 
     } catch (\Exception $e) {
         DB::rollback();

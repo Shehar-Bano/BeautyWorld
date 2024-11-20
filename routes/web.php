@@ -106,6 +106,8 @@ Route::prefix('expence')->name('expences.')->group(function () {
 });
 Route::get('/expence-report', [ReportController::class, 'expence'])->name('expence.report');
 Route::get('/sales-report', [ReportController::class, 'sale'])->name('sales.report');
+Route::get('/sales-report/{id}', [ReportController::class, 'detail'])->name('detail.sales');
+Route::get('/balanceSheet', [ReportController::class, 'balanceSheet'])->name('balanceSheet');
 
 ///////////////////services/////////////////
 //------------------category--------------//
@@ -125,7 +127,7 @@ Route::prefix('carts')->name('cart.')->controller(ServiceCartController::class)-
     Route::get('/', 'index')->name('index');
     Route::get('/get-seat-numbers',  'getSeatNumbers')->name('seat.numbers');
     Route::get('/get-cart-items/{seatNumber}', 'getCartItemsForSeat');
-   
+
 Route::post('/cart-update',  'update')->name('update');
 
 
