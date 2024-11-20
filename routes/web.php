@@ -117,6 +117,8 @@ Route::resource('service_categories', ServiceCategoryController::class)->names([
 ]);
 //----------------Service-------------//
 Route::resource('services', ServiceController::class);
+Route::post('/services/import', [ServiceController::class, 'import'])->name('services.import.submit');
+
 
 /////////////////////orders////////////////////////////
 //-----------------Cart------------------//
@@ -132,7 +134,6 @@ Route::post('/cart-update',  'update')->name('update');
 Route::post('/cart/add', 'addToCart')->name('add');
 
 Route::post('/confirm-order', 'confirmOrder')->name('order.confirm');
-Route::post('/cart/empty', 'emptyCart')->name('empty');
 });
 
 

@@ -9,9 +9,11 @@
 
         <!-- Button to Redirect to Create Service Page -->
         <div class="d-flex justify-content-end mt-4">
+
             <a href="{{ route('expences.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Add New Expence
             </a>
+           
         </div>
 
         <!-- Display All Services -->

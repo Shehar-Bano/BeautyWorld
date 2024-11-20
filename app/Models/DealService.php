@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DealService extends Model
 {
-    protected $table = 'deal_services';
+    use HasFactory;
+    // protected $table = 'deal_services';
     protected $fillable = ['deal_id', 'service_id'];
 
     public function deal()
