@@ -4,7 +4,19 @@
 <div class="page-wrapper">
     <div class="container-fluid">
         <div class="card">
+            <div class="d-flex justify-content-lg-start  my-4 mx-2 ">
+                <!-- Import Form -->
+                <form action="{{ route('services.import.submit') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+                    @csrf
+                    <div class="d-flex">
+                        <input type="file" name="file" class="form-control form-control-sm me-2" style="width: auto;" required>
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-file-import"></i> Import Services
+                        </button>
+                    </div>
+                </form></div>
             <div class="d-flex justify-content-end my-4 mx-2 ">
+
                 <a href="{{ route('services.create') }}" class="btn btn-info text-white">
                     <i class="fas fa-plus"></i> Add New Service
                 </a>

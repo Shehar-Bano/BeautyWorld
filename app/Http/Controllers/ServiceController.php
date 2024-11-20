@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Imports\ServiceImport;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServiceController extends Controller
 {
@@ -63,12 +65,18 @@ class ServiceController extends Controller
 
         
     }
+    public function import(Request $request){
+        Excel::import(new ServiceImport($request->file('file')), $request->file('file'));
+        return redirect()->back()->with('success', 'Services imported successfully!');
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+        return redirect()->route('services.index')->with('success', 'Service deleted successfully');
+        
     }
 }
